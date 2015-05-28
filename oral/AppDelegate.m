@@ -8,8 +8,12 @@
 
 #import "AppDelegate.h"
 #import "TopicMainViewController.h"
-
-
+// 测试用
+#import "CheckKeyWordViewController.h"
+#import "CheckAskViewController.h"
+#import "CheckSuccessViewController.h"
+#import "MyTeacherViewController.h"
+#import "TPCPersonCenterViewController.h"
 
 @interface AppDelegate ()
 
@@ -25,10 +29,28 @@
     self.window.backgroundColor = [UIColor whiteColor];
     
     TopicMainViewController *rootVC = [[TopicMainViewController alloc]init];
-    UINavigationController *topicNvc = [[UINavigationController alloc]initWithRootViewController:rootVC];
+         UINavigationController *topicNvc = [[UINavigationController alloc]initWithRootViewController:rootVC];
     topicNvc.navigationBarHidden = YES;
-    self.window.rootViewController = topicNvc;
+        self.window.rootViewController = topicNvc;
     
+//    CheckSuccessViewController *sucVC = [[CheckSuccessViewController alloc]initWithNibName:@"CheckSuccessViewController" bundle:nil];
+//    sucVC.pointCount = 1;
+//    self.window.rootViewController  = sucVC;
+//
+//    CheckKeyWordViewController *keyVC = [[CheckKeyWordViewController alloc]initWithNibName:@"CheckKeyWordViewController" bundle:nil];
+//    self.window.rootViewController = keyVC;
+    
+//    CheckAskViewController *askVC = [[CheckAskViewController alloc]initWithNibName:@"CheckAskViewController" bundle:nil];
+//    self.window.rootViewController = askVC;
+    
+//    MyTeacherViewController *myTeaVC = [[MyTeacherViewController alloc]initWithNibName:@"MyTeacherViewController" bundle:nil];
+//    self.window.rootViewController = myTeaVC;
+
+//    TPCPersonCenterViewController *personVC = [[TPCPersonCenterViewController alloc]initWithNibName:@"TPCPersonCenterViewController" bundle:nil];
+//    UINavigationController *personNVC = [[UINavigationController alloc]initWithRootViewController:personVC];
+//    personNVC.navigationBarHidden = YES;
+//    self.window.rootViewController = personNVC;
+
     
     [self.window makeKeyAndVisible];
     

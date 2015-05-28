@@ -8,6 +8,8 @@
 
 #import "TopicParentsViewController.h"
 
+#import "TPCCheckpointViewController.h"
+
 @interface TopicParentsViewController ()
 
 @end
@@ -23,9 +25,20 @@
     _navTopView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_navTopView];
     
-    UILabel *lineLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 44, kScreentWidth, 1)];
-    lineLab.backgroundColor = [UIColor colorWithRed:231/255.0 green:238/255.0 blue:239/255.0 alpha:1];
-    [self.view addSubview:lineLab];
+    _lineLab = [[UILabel alloc]initWithFrame:CGRectMake(0, 44, kScreentWidth, 1)];
+    _lineLab.backgroundColor = [UIColor colorWithRed:231/255.0 green:238/255.0 blue:239/255.0 alpha:1];
+    [self.view addSubview:_lineLab];
+    
+    
+    _backColor = [UIColor colorWithRed:128/255.0 green:230/255.0 blue:209/255.0 alpha:1];
+    _timeProgressColor = [UIColor colorWithRed:245/255.0 green:88/255.0 blue:62/255.0 alpha:1];
+    _textColor = [UIColor colorWithRed:120/255.0 green:120/255.0 blue:120/255.0 alpha:1];
+    _pointColor = [UIColor colorWithRed:35/255.0 green:222/255.0 blue:191/255.0 alpha:1];
+    _backgroundViewColor = [UIColor colorWithRed:244/255.0 green:249/255.0 blue:250/255.0 alpha:1];
+    
+    _badColor = [UIColor colorWithRed:255/255.0 green:63/255.0 blue:37/255.0 alpha:1];
+    _perfColor = [UIColor colorWithRed:0 green:231/255.0 blue:136/255.0 alpha:1];
+    _goodColor = [UIColor colorWithRed:250/255.0 green:220/255.0 blue:18/255.0 alpha:1];
 }
 
 // 返回按钮
@@ -41,13 +54,21 @@
 - (void)backToPrePage
 {
     [self.navigationController popViewControllerAnimated:YES];
+//    for (UIViewController *viewControllers in self.navigationController.viewControllers)
+//    {
+//        if ([viewControllers isKindOfClass:[TPCCheckpointViewController class]])
+//        {
+//            [self.navigationController popToViewController:viewControllers animated:YES];
+//            break;
+//        }
+//    }
 }
 
 // titleLabel
 - (void)addTitleLabelWithTitleWithTitle:(NSString *)title
 {
     _titleLab = [[UILabel alloc]initWithFrame:CGRectMake(60, 2, kScreentWidth-60*2, 40)];
-    _titleLab.textColor = [UIColor colorWithWhite:119/255.0 alpha:1];
+    _titleLab.textColor = _textColor;
     _titleLab.font = [UIFont systemFontOfSize:KOneFontSize];
     _titleLab.textAlignment = NSTextAlignmentCenter;
     _titleLab.text = title;

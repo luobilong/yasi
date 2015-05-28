@@ -7,14 +7,35 @@
 //
 
 #import <UIKit/UIKit.h>
-
+/*
+     所有视图父类 --> 用于自定义导航栏
+ */
 @interface TopicParentsViewController : UIViewController
+{
+    UIColor *_backColor;// 老师外圈颜色 顶部按钮背景色 导航条颜色
+    UIColor *_timeProgressColor;// 时间进度条颜色
+    UIColor *_textColor;// 文字颜色
+    UIColor *_pointColor;// 闯关页part按钮颜色
+    UIColor *_backgroundViewColor;
+    
+    UIColor *_perfColor;// 80~100
+    UIColor *_goodColor;// 60~80
+    UIColor *_badColor;// 0~60
+}
+@property (nonatomic,strong) UIView *navTopView;// 模拟导航栏背景
+@property (nonatomic,strong) UILabel *lineLab;
+@property (nonatomic,strong) UILabel *titleLab; //  标题控件
 
-@property (nonatomic,strong) UIView *navTopView;
+
+@property (nonatomic,copy) NSString *topicName;
+@property (nonatomic,assign) NSInteger currentPartCounts;// 当前part 共3部分 范围（0--2）
+
+
 // 返回按钮
 - (void)addBackButtonWithImageName:(NSString *)imageName;
 // titleLabel
 - (void)addTitleLabelWithTitleWithTitle:(NSString *)title;
-@property (nonatomic,strong) UILabel *titleLab;
+// 返回上一页
+- (void)backToPrePage;
 
 @end
