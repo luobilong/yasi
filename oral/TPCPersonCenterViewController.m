@@ -8,6 +8,9 @@
 
 #import "TPCPersonCenterViewController.h"
 #import "PersonClassViewController.h"
+#import "PersonSettingViewController.h"
+#import "PersonProgressViewController.h"
+#import "PersonEditViewController.h"
 
 
 @interface TPCPersonCenterViewController ()
@@ -28,39 +31,44 @@
     // 返回按钮
     [self addBackButtonWithImageName:@"back-Blue"];
     [self addTitleLabelWithTitleWithTitle:@"我的后院"];
+    
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [rightButton setFrame:CGRectMake(kScreentWidth-50, 7, 30, 30)];
-    rightButton.backgroundColor = [UIColor purpleColor];
-    [rightButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+    [rightButton setFrame:CGRectMake(kScreentWidth-40, (self.navTopView.frame.size.height-24-20)/2+24, 20, 20)];
+    [rightButton setBackgroundImage:[UIImage imageNamed:@"person_setting"] forState:UIControlStateNormal];
     rightButton.titleLabel.font = [UIFont systemFontOfSize:kFontSize1];
+    
+    [rightButton addTarget:self action:@selector(personSetting) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.navTopView addSubview:rightButton];
+    self.navTopView.backgroundColor = _backgroundViewColor;
     [self uiConfig];
 }
 
+- (void)personSetting
+{
+    PersonSettingViewController *personSetVC = [[PersonSettingViewController alloc]initWithNibName:@"PersonSettingViewController" bundle:nil];
+    [self.navigationController pushViewController:personSetVC animated:YES];
+}
+  
 - (void)uiConfig
 {
-    _personInfoBackView.backgroundColor = [UIColor colorWithRed:83/255.0 green:157/255.0 blue:170/255.0 alpha:1];
-    _personBackImgV.image = [UIImage imageNamed:@""];
-    
     // 用户头像圆形
     _personHeadButton.layer.masksToBounds = YES;
     _personHeadButton.layer.cornerRadius = _personHeadButton.bounds.size.height/2;
     _personHeadButton.layer.borderColor = [UIColor whiteColor].CGColor;
     _personHeadButton.layer.borderWidth =2;
     
-    
     // 性别 星座背景色 后续修改 暂时用此颜色
-    _sexButton.backgroundColor = [UIColor colorWithRed:131/255.0 green:177/255.0 blue:181/255.0 alpha:1];
-    _ConstellationButton.backgroundColor = [UIColor colorWithRed:131/255.0 green:177/255.0 blue:181/255.0 alpha:1];
+    _sexButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
+    _ConstellationButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
     _sexButton.layer.cornerRadius= _sexButton.bounds.size.height/2;
     _ConstellationButton.layer.cornerRadius= _ConstellationButton.bounds.size.height/2;
     
-    _myClassLabel.textColor = _textColor;
-    _progressTitleLabel.textColor = _textColor;
-    
     _enterClassButton.tag = kEnterClassButtonTag;
-    _enterProgressButton.tag = kEnterProgressButtonTag;
+    _pointProgressButton.tag = kEnterProgressButtonTag;
     
+    [_enterClassButton setTitleColor:_textColor forState:UIControlStateNormal];
+    [_pointProgressButton setTitleColor:_textColor forState:UIControlStateNormal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -88,6 +96,8 @@
     if (btn.tag == kEnterProgressButtonTag)
     {
         // 闯关进度
+        PersonProgressViewController *progressVC = [[PersonProgressViewController alloc]initWithNibName:@"PersonProgressViewController" bundle:nil];
+        [self.navigationController pushViewController:progressVC animated:YES];
     }
     else if (btn.tag == kEnterClassButtonTag)
     {
@@ -95,5 +105,12 @@
         PersonClassViewController *classVc = [[PersonClassViewController alloc]initWithNibName:@"PersonClassViewController" bundle:nil];
         [self.navigationController pushViewController:classVc animated:YES];
     }
+}
+
+- (IBAction)editButtonClicked:(id)sender
+{
+    // 编辑个人信息
+    PersonEditViewController *editVC = [[PersonEditViewController alloc]initWithNibName:@"PersonEditViewController" bundle:nil];
+    [self.navigationController pushViewController:editVC animated:YES];
 }
 @end

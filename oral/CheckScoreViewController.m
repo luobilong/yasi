@@ -17,6 +17,9 @@
 {
     UIScrollView *_backScrollV;
     UISegmentedControl *_segment;
+    float _decreaseRatio;// 根据音频时间换算出进度条每次减少的比率
+    NSInteger _ClickedIndex;
+    NSTimer *_timer;
 }
 @end
 
@@ -27,6 +30,7 @@
 #define kTestViewTAg 555
 
 #define kPlayButtonTag 55
+// 音频时间View tag
 #define kProgressViewTag 66
 
 #define kTestCommitButtonTag 77
@@ -64,9 +68,15 @@
     // 创建一个分段控件
     _segment = [[UISegmentedControl alloc]initWithItems:array];
     // 分段控件的位置
-    _segment.frame = CGRectMake((kScreentWidth-110)/2, 55, 110, 35);
+    _segment.frame = CGRectMake((kScreentWidth-110)/2, KNavTopViewHeight + 12, 110, 35);
     // 分段控件的选中颜色
     _segment.tintColor = _pointColor;
+    for (UIView *view in _segment.subviews)
+    {
+        view.layer.masksToBounds = YES;
+        view.layer.cornerRadius = _segment.frame.size.height/2;
+    }
+    
     // 默认启动选择索引
     _segment.selectedSegmentIndex = 0;
     // 圆角半径
@@ -86,15 +96,8 @@
     _backScrollV.contentSize = CGSizeMake(kScreentWidth*2, kScreenHeight-100);
     [self.view addSubview:_backScrollV];
     // 模考
-//    NSInteger testHeight = 100;
-//    NSInteger sumTimeWid = kScreentWidth-155;// 时间控件长度
     for (int i = 0; i < 3; i ++)
     {
-//        ScoreMenuTestView *testV = [[[NSBundle mainBundle]loadNibNamed:@"ScoreMenuTestView" owner:self options:0] lastObject];
-//        testV.frame = CGRectMake(0, i*testHeight, kScreentWidth, testHeight);
-//        testV.tag = i+kTestViewTAg;
-//        
-//        [_backScrollV addSubview:testV];
         // 40 40
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(40, 20+i*100, kScreentWidth-80, 30)];
         label.text = [NSString stringWithFormat:@"Part%d",i+1];
@@ -110,7 +113,8 @@
         
         UIButton *playButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [playButton setFrame:CGRectMake(5, 5, 35, 35)];
-        [playButton setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal];
+        [playButton setBackgroundImage:[UIImage imageNamed:@"Prac_play_n"] forState:UIControlStateNormal];
+        [playButton setBackgroundImage:[UIImage imageNamed:@"Prac_play_s"] forState:UIControlStateSelected];
         [playButton addTarget:self action:@selector(playButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         playButton.tag = kPlayButtonTag +i;
         [testBAckView addSubview:playButton];
@@ -119,17 +123,25 @@
         CustomProgressView *progressV = [[CustomProgressView alloc]initWithFrame:CGRectMake(50, 20, testBAckView.frame.size.width-70, 4)];
         progressV.tag = kProgressViewTag+i;
         progressV.backgroundColor = [UIColor whiteColor];
-        progressV.progress = 0.5;
+        progressV.progress = 1;
         progressV.progressView.backgroundColor = _pointColor;
         [testBAckView addSubview:progressV];
+        NSLog(@"~~~~~~~~%ld",progressV.tag);
+
     }
     
     // 提交按钮
     NSInteger yyy = kScreenHeight<500?(kScreenHeight-kTestCommitButtonHeight-10-100):380;
     UIButton *commitTestButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [commitTestButton setFrame:CGRectMake((kScreentWidth-kTestCommitButtonWidth)/2, yyy, kTestCommitButtonWidth, kTestCommitButtonHeight)];
+    
+    // 一共三种状态 1：未提交 --》tijiao geilaoshi 
+    
     [commitTestButton setTitle:@"提交给老师" forState:UIControlStateNormal];
     [commitTestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [commitTestButton setTitle:@"查看反馈" forState:UIControlStateSelected];
+    [commitTestButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+
     commitTestButton.layer.cornerRadius = kTestCommitButtonHeight/2;
     commitTestButton.backgroundColor = _pointColor;
     commitTestButton.titleLabel.font = [UIFont systemFontOfSize:kFontSize1];
@@ -142,7 +154,7 @@
     {
         // 240 100
         UIButton *partButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [partButton setFrame:CGRectMake(kScreentWidth+(kScreentWidth-kPartButtonWidth)/2, 40+i*(kPartButtonHeight+15), kPartButtonWidth, kPartButtonHeight)];
+        [partButton setFrame:CGRectMake(kScreentWidth+75, 65+i*(kPartButtonHeight+15), kScreentWidth-150, kPartButtonHeight)];
         [partButton setTitle:[partButtonNameArray objectAtIndex:i] forState:UIControlStateNormal];
         [partButton setTitleColor:_pointColor forState:UIControlStateNormal];
         partButton.backgroundColor = [UIColor colorWithRed:245/255.0 green:249/255.0 blue:250/255.0 alpha:1];
@@ -168,6 +180,47 @@
 - (void)playButtonClicked:(UIButton *)playButton
 {
     // 调用播放器 进度条随着播放逐渐减少  ---- 待完善
+    if (playButton.selected)
+    {
+        playButton.selected = NO;
+        [self stopTimer];
+    }
+    else
+    {
+        _ClickedIndex = playButton.tag - kPlayButtonTag;
+        playButton.selected = YES;
+        [self startPlay];
+    }
+}
+
+- (void)startPlay
+{
+    CustomProgressView *progressV = (CustomProgressView *)[self.view viewWithTag:kProgressViewTag+_ClickedIndex];
+    progressV.progress = 1;
+    _decreaseRatio = 1.0/4.2/10;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(timeDaoJiShi) userInfo:nil repeats:YES];
+}
+
+- (void)stopTimer
+{
+    [_timer invalidate];
+     _timer = nil;
+}
+
+#pragma mark - - 音频倒计时
+- (void)timeDaoJiShi
+{
+    CustomProgressView *progressV = (CustomProgressView *)[self.view viewWithTag:kProgressViewTag+_ClickedIndex];
+    NSLog(@"~~~~~~~~%ld",progressV.tag);
+    progressV.progress -= _decreaseRatio;
+    NSLog(@"%f",progressV.progress);
+    
+    if (progressV.progress<=0)
+    {
+        [self stopTimer];
+        UIButton *playBtn = (UIButton *)[self.view viewWithTag:kPlayButtonTag+_ClickedIndex];
+        playBtn.selected = NO;
+    }
 }
 
 #pragma mark - 闯关

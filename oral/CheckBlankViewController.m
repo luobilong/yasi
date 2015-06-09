@@ -65,7 +65,7 @@
     audioPlayer.action = @selector(playerCallBack);
     _currentPointCounts = 1;
 
-    [self addBackButtonWithImageName:@"back-white"];
+//    [self addBackButtonWithImageName:@"back-white"];
     [self addTitleLabelWithTitleWithTitle:@"Part1-2"];
     self.navTopView.backgroundColor = _backColor;
     self.titleLab.textColor = [UIColor whiteColor];
@@ -81,16 +81,16 @@
 // 用于提示用户操作成功
 - (void)createTipLabel
 {
-    UILabel *tipLab = [[UILabel alloc]initWithFrame:CGRectMake((kScreentWidth-100)/2, kScreenHeight-40, 0, 0)];
+    UILabel *tipLab = [[UILabel alloc]initWithFrame:CGRectMake((kScreentWidth-100)/2, kScreenHeight-35, 0, 0)];
     tipLab.tag = 1111;
     tipLab.text = @"成功加入练习簿";
-    tipLab.backgroundColor = [UIColor whiteColor];
+    tipLab.backgroundColor = [UIColor clearColor];
     tipLab.textAlignment = NSTextAlignmentCenter;
-    tipLab.textColor = _backColor;
+    tipLab.textColor = _pointColor;
     tipLab.font = [UIFont systemFontOfSize:KFourFontSize];
     tipLab.layer.masksToBounds = YES;
     tipLab.layer.cornerRadius = 3;
-    tipLab.layer.borderColor = _backColor.CGColor;
+    tipLab.layer.borderColor = _pointColor.CGColor;
     tipLab.layer.borderWidth = 1;
     [self.view addSubview:tipLab];
 }
@@ -102,12 +102,13 @@
     // 背景颜色 去掉
     _topQuestionCountView.backgroundColor = [UIColor clearColor];
     // 计算出按钮高度  不同尺寸屏幕 高度不同
-    NSInteger btnWid = _topQuestionCountView.frame.size.height/667*kScreenHeight-2*8;
+    NSInteger partCountViewHeight = _topQuestionCountView.frame.size.height;
+    NSInteger btnWid = 30;
     // 根据总问题数创建按钮
     for (int i = 0; i < _sumQuestionCounts; i ++)
     {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setFrame:CGRectMake(20+i*(btnWid+10), 8, btnWid, btnWid)];
+        [btn setFrame:CGRectMake(20+i*(btnWid+10), (partCountViewHeight-btnWid)/2, btnWid, btnWid)];
         [btn setTitle:[NSString stringWithFormat:@"%d",i+1] forState:UIControlStateNormal];
         [btn setBackgroundImage:[UIImage imageNamed:@"questionCount-white"] forState:UIControlStateNormal];
         // 选中
@@ -128,7 +129,7 @@
     _teacherView.backgroundColor = [UIColor clearColor];
     // 老师头像 --- 设置圆角半径 layer
     _teaHeadImgView.layer.masksToBounds = YES;
-    _teaHeadImgView.layer.cornerRadius = _teaHeadImgView.bounds.size.height/1334*kScreenHeight;
+    _teaHeadImgView.layer.cornerRadius = _teaHeadImgView.bounds.size.height/2;
     _teaHeadImgView.layer.borderColor = _backColor.CGColor;
     _teaHeadImgView.layer.borderWidth = 2;
     [_teaHeadImgView setImage:[UIImage imageNamed:@"touxiang"]];
@@ -143,9 +144,9 @@
     _teaQuestionLabel.numberOfLines = 0;
     _teaQuestionLabel.backgroundColor = [UIColor clearColor];
     
-    _teaQuestionBackImgV.layer.masksToBounds = YES;
-    _teaQuestionBackImgV.layer.cornerRadius = _teaQuestionLabel.frame.size.height/1334*kScreenHeight;
-    _teaQuestionBackImgV.backgroundColor = [UIColor whiteColor];
+    _teaQuestionBackView.layer.masksToBounds = YES;
+    _teaQuestionBackView.layer.cornerRadius = _teaQuestionLabel.frame.size.height/2;
+    _teaQuestionBackView.backgroundColor = [UIColor whiteColor];
 
     
     // 学生部分控件
@@ -158,41 +159,43 @@
     
     _stuAnswerLabel.text = @"";//起始为空
     _stuAnswerLabel.textColor = _textColor;
-    _stuBottomView.backgroundColor = [UIColor clearColor];
     _stuLineLabel.backgroundColor = [UIColor colorWithWhite:248/255.0 alpha:1];
     // 时间进度条
     _stuTimeProgressLabel.backgroundColor = _backColor;
+    
+    
+    _studentView.frame = CGRectMake(15, 215, kScreentWidth-30,  kScreenHeight-215-160);
+    
     // 标记时间进度条原始frame
     CGRect rect = _stuTimeProgressLabel.frame;
-    rect.size.width = rect.size.width/375*kScreentWidth;
+    rect.size.width = kScreentWidth-130;
+    rect.origin.x = 8;
+    rect.origin.y = _studentView.frame.size.height-36;
     _stuTimeProgressLabel.frame = rect;
     _timeProgressRect = rect;
     // 学生头像
     _stuHeadImgView.layer.masksToBounds = YES;
-    _stuHeadImgView.layer.cornerRadius = _stuHeadImgView.frame.size.height/667*kScreenHeight/2;
+    _stuHeadImgView.layer.cornerRadius = _stuHeadImgView.frame.size.height/2;
     _stuHeadImgView.layer.borderWidth = 2;
     _stuHeadImgView.layer.borderColor = _backColor.CGColor;
     
     // 分数按钮
     _stuScoreButton.layer.cornerRadius = _stuScoreButton.frame.size.height/2;
     [_stuScoreButton setBackgroundColor:_backColor];
-    // 底部View
-    _followView.backgroundColor = [UIColor clearColor];
     //隐藏跟读按钮
     _followAnswerButton.hidden = YES;
     [_followAnswerButton setBackgroundImage:[UIImage imageNamed:@"answerButton-sele"] forState:UIControlStateNormal];
     [_followAnswerButton setBackgroundImage:[UIImage imageNamed:@"answerButton-sele"] forState:UIControlStateSelected];
     
     // 下一题
-    [_continueButton setTitleColor:_textColor forState:UIControlStateNormal];
-    [_continueButton setAdjustsImageWhenHighlighted:YES];
-    [_continueButton setTitleColor:_backColor forState:UIControlStateHighlighted];
-    [_continueButton setBackgroundImage:[UIImage imageNamed:@"nextQuestion"] forState:UIControlStateHighlighted];
-    // 加入练习簿
-    [_addBookButton setTitleColor:_textColor forState:UIControlStateNormal];
-    [_addBookButton setAdjustsImageWhenHighlighted:YES];
-    [_addBookButton setBackgroundImage:[UIImage imageNamed:@"exesize"] forState:UIControlStateHighlighted];
-    [_addBookButton setTitleColor:_backColor forState:UIControlStateHighlighted];
+    [_continueButton setTitleColor:_pointColor forState:UIControlStateNormal];
+    [_continueButton setAdjustsImageWhenHighlighted:NO];
+    _continueButton.layer.masksToBounds = YES;
+    _continueButton.layer.cornerRadius = _continueButton.frame.size.height/2;
+    [_continueButton setBackgroundColor:[UIColor whiteColor]];
+    
+    _continueButton.hidden = YES;
+    [_continueButton setTitleColor:kPart_Button_Color forState:UIControlStateNormal];
     
     // 起始状态：老师头像暗 学生头像 暗 文本不显示
     _teaHeadImgView.alpha = 0.3;
@@ -373,8 +376,10 @@
     }
     // 获取音频路径
     NSString *audiourl = [[_questioListArray objectAtIndex:_currentQuestionCounts] objectForKey:@"audiourl"];
-    NSArray *audioArr = [audiourl componentsSeparatedByString:@"."];
-    NSString *audioPath = [[NSBundle mainBundle]pathForResource:[audioArr objectAtIndex:0] ofType:[audioArr lastObject]];
+//    NSArray *audioArr = [audiourl componentsSeparatedByString:@"."];
+//    NSString *audioPath = [[NSBundle mainBundle]pathForResource:[audioArr objectAtIndex:0] ofType:[audioArr lastObject]];
+    NSString *audioPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@/topicResource/temp/%@",self.topicName,audiourl];
+
     [audioPlayer playerPlayWithFilePath:audioPath];
 }
 
@@ -459,11 +464,9 @@
     
     // 隐藏回答按钮  展示下一题区域
     _followAnswerButton.hidden = YES;
-    _addBookButton.hidden = NO;
     _continueButton.hidden = NO;
     _stuHeadImgView.alpha = 0.3;
-    [_continueButton setTitleColor:_textColor forState:UIControlStateNormal];
-    [_addBookButton setTitleColor:_textColor forState:UIControlStateNormal];
+    [_continueButton setTitleColor:kPart_Button_Color forState:UIControlStateNormal];
 }
 
 #pragma mark - 定时器
@@ -471,12 +474,10 @@
 - (void)timeReduce
 {
     CGRect rect = _stuTimeProgressLabel.frame;
-    float reduceWid = rect.size.width/_answerTime;
-    rect.origin.x += reduceWid;
-    rect.size.width -= reduceWid;
+    rect.origin.x ++;
+    rect.size.width --;
     _stuTimeProgressLabel.frame = rect;
-    _answerTime --;
-    if (_answerTime==0)
+    if (rect.size.width<=0)
     {
         [self stopReduceTimer];
         //倒计时结束 停止跟读
@@ -492,30 +493,11 @@
     _reduceTimer = nil;
 }
 
-
-
-
-
-#pragma mark- 加入练习本
-- (IBAction)addBookClicked:(id)sender
-{
-    UIButton *btn = (UIButton *)sender;
-    [btn setTitleColor:_backColor forState:UIControlStateNormal];
-    [btn setBackgroundImage:[UIImage imageNamed:@"exesize"] forState:UIControlStateNormal];
-    
-    // 加入练习
-    [self addExsBook];
-}
 #pragma mark - 下一题
 - (IBAction)continueButtonClicked:(id)sender
 {
-    UIButton *btn = (UIButton *)sender;
-    [btn setTitleColor:_backColor forState:UIControlStateNormal];
-    [btn setBackgroundImage:[UIImage imageNamed:@"nextQuestion"] forState:UIControlStateNormal];
-    
     // 下一题
     _reduceTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(jugePointIsFinished) userInfo:nil repeats:NO];
-    //    [self jugePointIsFinished];
 }
 
 #pragma mark- 跟读按钮被点击
@@ -537,37 +519,10 @@
         [self startSBC];
         // 时间进度条变化
         _stuTimeProgressLabel.frame = _timeProgressRect;
-        _reduceTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(timeReduce) userInfo:nil repeats:YES];
+        _reduceTimer = [NSTimer scheduledTimerWithTimeInterval:15/_timeProgressRect.size.width target:self selector:@selector(timeReduce) userInfo:nil repeats:YES];
     }
 }
 
-#pragma mark -- 将当前练习数据加入练习簿
-- (void)addExsBook
-{
-    // 此处将当前练习数据加入练习簿  ---待完成
-    
-    
-    
-    // 给用户提示  加入成功
-    UILabel *tipLab = (UILabel *)[self.view viewWithTag:1111];
-    CGRect rect = tipLab.frame;
-    rect.size.width = 100;
-    rect.size.height = 30;
-    [UIView animateWithDuration:0.5 animations:^{
-        tipLab.frame = rect;
-    }];
-    _reduceTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(addBookFinished) userInfo:nil repeats:NO];
-}
-
-#pragma mark -- 成功加入练习簿
-- (void)addBookFinished
-{
-    [self stopReduceTimer];
-    UILabel *tipLab = (UILabel *)[self.view viewWithTag:1111];
-    tipLab.frame = CGRectMake((kScreentWidth-100)/2, kScreenHeight-40, 0, 0);
-    // 下一题
-    [self jugePointIsFinished];
-}
 
 #pragma mark -- 下一问题
 - (void)next
@@ -584,6 +539,7 @@
     {
         // 下一题
         [self questionCountChanged];//标记当前进行的问题数
+        [self changeAnswerProgress];
         _currentAnswerListArray = [[_questioListArray objectAtIndex:_currentQuestionCounts] objectForKey:@"answerlist"];
         [self prepareQuestion];
     }
@@ -598,9 +554,9 @@
     _answerTime = 15;
     // 隐藏下一问题按钮区域
     _continueButton.hidden = YES;
-    _addBookButton.hidden = YES;
+//    _addBookButton.hidden = YES;
     _continueButton.selected = NO;
-    _addBookButton.selected = NO;
+//    _addBookButton.selected = NO;
     // 隐藏分数 显示学生头像 时间进度条
     _stuScoreButton.hidden = YES;
     _stuTimeProgressLabel.hidden = NO;
@@ -611,18 +567,31 @@
     {
         _currentAnswerCounts = 0;
         _currentQuestionCounts ++;
-    }
-    
-    if (_currentQuestionCounts<_sumQuestionCounts)
-    {
-        [self next];
+        if (_currentQuestionCounts<_sumQuestionCounts)
+        {
+            // 下一题
+            [self questionCountChanged];//标记当前进行的问题数
+            // 继续当前问题
+            [self changeAnswerProgress];
+            _currentAnswerListArray = [[_questioListArray objectAtIndex:_currentQuestionCounts] objectForKey:@"answerlist"];
+            [self prepareQuestion];
+        }
+        else
+        {
+            //关卡结束 跳转过渡页
+            CheckSuccessViewController *successVC = [[CheckSuccessViewController alloc]initWithNibName:@"CheckSuccessViewController" bundle:nil];
+            successVC.pointCount = self.currentPointCounts;
+            successVC.topicName = self.topicName;
+            [self.navigationController pushViewController:successVC animated:YES];
+        }
+        
     }
     else
     {
-        //关卡结束 跳转过渡页
-        CheckSuccessViewController *successVC = [[CheckSuccessViewController alloc]initWithNibName:@"CheckSuccessViewController" bundle:nil];
-        successVC.pointCount = self.currentPointCounts;
-        [self.navigationController pushViewController:successVC animated:YES];
+        // 继续当前问题
+        [self changeAnswerProgress];
+        _startAnswer = YES;//标记 用于播放器回调方法
+        [self prepareFollow];
     }
 }
 

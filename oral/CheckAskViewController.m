@@ -110,7 +110,7 @@
     audioPlayer.target = self;
     audioPlayer.action = @selector(playerCallBack);
     
-    [self addBackButtonWithImageName:@"back-white"];
+//    [self addBackButtonWithImageName:@"back-white"];
     [self addTitleLabelWithTitleWithTitle:@"Part1-3"];
     self.navTopView.backgroundColor = [UIColor colorWithRed:144/255.0 green:231/255.0 blue:208/255.0 alpha:1];
     self.titleLab.textColor = [UIColor whiteColor];
@@ -129,16 +129,16 @@
     _topView.backgroundColor = [UIColor clearColor];
     _teacherView.backgroundColor = [UIColor clearColor];
     _stuView.backgroundColor = [UIColor clearColor];
-    _bottomView.backgroundColor = [UIColor clearColor];
     
     // 背景颜色 去掉
     // 计算出按钮高度  不同尺寸屏幕 高度不同
-    NSInteger btnWid = _topView.frame.size.height-2*8;
+    NSInteger partCountHeight = _topView.frame.size.height;
+    NSInteger btnWid = 30;
     // 根据总问题数创建按钮
     for (int i = 0; i < _sumQuestionCounts; i ++)
     {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setFrame:CGRectMake(20+i*(btnWid+10), 8, btnWid, btnWid)];
+        [btn setFrame:CGRectMake(20+i*(btnWid+10), (partCountHeight-btnWid)/2, btnWid, btnWid)];
         [btn setTitle:[NSString stringWithFormat:@"%d",i+1] forState:UIControlStateNormal];
         [btn setBackgroundImage:[UIImage imageNamed:@"questionCount-white"] forState:UIControlStateNormal];
         // 选中
@@ -146,6 +146,9 @@
         [btn setTitleColor:_backColor forState:UIControlStateNormal];
         [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateSelected];
         btn.titleLabel.font = [UIFont systemFontOfSize:KThidFontSize];
+        
+        [btn addTarget:self action:@selector(questionCountChanged_ask) forControlEvents:UIControlEventTouchUpInside];
+        
         btn.tag = kTopQueCountButtonTag+i;
         if (i == 0)
         {
@@ -157,27 +160,27 @@
 
     
     // 获取到老师背景View的frame
-    CGRect rect = _teacherView.frame;
-    float ratio = rect.size.width/rect.size.height;
-    rect.size.width = kScreentWidth;
-    rect.size.height = kScreentWidth/ratio;
-    _teacherView.frame = rect;
+//    CGRect rect = _teacherView.frame;
+//    float ratio = rect.size.width/rect.size.height;
+//    rect.size.width = kScreentWidth;
+//    rect.size.height = kScreentWidth/ratio;
+//    _teacherView.frame = rect;
     
     // 老师头像 圆形 有光圈
     _teaHeadImgView.image = [UIImage imageNamed:@"touxiang.png"];
     _teaHeadImgView.layer.masksToBounds = YES;
-    _teaHeadImgView.layer.cornerRadius = (rect.size.height-20)/2;
+    _teaHeadImgView.layer.cornerRadius = _teaHeadImgView.frame.size.height/2;
     _teaHeadImgView.layer.borderColor = _backColor.CGColor;
     _teaHeadImgView.layer.borderWidth = 3;
     
     // 确定问题背景frame
-    NSInteger queBackHH = _teaHeadImgView.frame.size.width;
-    NSInteger queBackX = 30 + queBackHH;
-    NSInteger queBackWW = kScreentWidth - queBackX - 20;
-    _teaQuestioBackV.frame = CGRectMake(queBackX, 10, queBackWW, queBackHH);
+    CGRect questionBackRect = _teaQuestioBackV.frame;
+    questionBackRect.origin.x = 105;
+    questionBackRect.size.width = kScreentWidth-120;
+    _teaQuestioBackV.frame = questionBackRect;
     _teaQuestioBackV.layer.masksToBounds = YES;
     _teaQuestioBackV.backgroundColor = [UIColor whiteColor];
-    _teaQuestioBackV.layer.cornerRadius = _teaQuestioBackV.frame.size.height/1334*kScreenHeight;
+    _teaQuestioBackV.layer.cornerRadius = _teaQuestioBackV.frame.size.height/2;
     
     // 问题文本 其实为空
     _teaQuestionLabel.numberOfLines = 0;
@@ -197,9 +200,9 @@
     _teaQuestionLabel.frame = _questionSmallRect;
     */
     
-    float middleHeight = kScreenHeight-90-_teacherView.frame.size.height-(_bottomView.frame.size.height/_bottomView.frame.size.width*kScreentWidth);
+//    float middleHeight = kScreenHeight-90-_teacherView.frame.size.height-(_bottomView.frame.size.height/_bottomView.frame.size.width*kScreentWidth);
     CGRect stuBackRect = _stuView.bounds;
-    stuBackRect.size.height = middleHeight;
+    stuBackRect.size.height = kScreenHeight-331;
     stuBackRect.size.width = kScreentWidth;
     _stuView.frame = stuBackRect;
     
@@ -241,6 +244,20 @@
     _teaHeadImgView.alpha = 0.3;
     _followAnswerButton.hidden = YES;
     [self narrowStuHeadImage];
+    
+    [_CommitLeftButton setBackgroundColor:[UIColor whiteColor]];
+    [_CommitLeftButton setTitleColor:_pointColor forState:UIControlStateNormal];
+    _CommitLeftButton.hidden = YES;
+    
+    [_commitRightButton setBackgroundColor:[UIColor whiteColor]];
+    [_commitRightButton setTitleColor:_pointColor forState:UIControlStateNormal];
+    _commitRightButton.hidden = YES;
+    
+    _CommitLeftButton.layer.masksToBounds = YES;
+    _CommitLeftButton.layer.cornerRadius = _CommitLeftButton.frame.size.height/2;
+    _commitRightButton.layer.masksToBounds = YES;
+    _commitRightButton.layer.cornerRadius = _CommitLeftButton.frame.size.height/2;
+    
 }
 
 #pragma mark - 创建时间进度条
@@ -308,6 +325,8 @@
                                     3）播放问题音频
      */
     // 停顿3秒 开始point3流程
+    
+    
     if (!_pointFinished)// 此处加条件判断：如果是从其他界面返回则不走流程
     {
         _reduceTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(prepareQuestion) userInfo:nil repeats:NO];
@@ -351,8 +370,10 @@
 {
     // 获取音频路径
     NSString *audiourl = [[_questioListArray objectAtIndex:_currentQuestionCounts] objectForKey:@"audiourl"];
-    NSArray *audioArr = [audiourl componentsSeparatedByString:@"."];
-    NSString *audioPath = [[NSBundle mainBundle]pathForResource:[audioArr objectAtIndex:0] ofType:[audioArr lastObject]];
+//    NSArray *audioArr = [audiourl componentsSeparatedByString:@"."];
+//    NSString *audioPath = [[NSBundle mainBundle]pathForResource:[audioArr objectAtIndex:0] ofType:[audioArr lastObject]];
+    NSString *audioPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@/topicResource/temp/%@",self.topicName,audiourl];
+
     [audioPlayer playerPlayWithFilePath:audioPath];
 }
 
@@ -456,6 +477,7 @@
             [self narrowStuHeadImage];
             _stuHeadImgV.alpha = 0.3;
         }];
+        [self questionCountChanged_ask];
         _reduceTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(prepareQuestion) userInfo:nil repeats:NO];
     }
     else
@@ -463,6 +485,23 @@
        // 提交给老师
         _CommitLeftButton.hidden = NO;
         _commitRightButton.hidden = NO;
+    }
+}
+
+#pragma mark -- 标记当前进行的问题数
+- (void)questionCountChanged_ask
+{
+    for (int i = 0; i < _sumQuestionCounts; i ++)
+    {
+        UIButton *btn = (UIButton *)[self.view viewWithTag:kTopQueCountButtonTag+i];
+        if (i == _currentQuestionCounts)
+        {
+            btn.selected = YES;
+        }
+        else
+        {
+            btn.selected = NO;
+        }
     }
 }
 
@@ -474,6 +513,7 @@
     if (btn.tag == kCommitLeftButtonTag)
     {
         // 稍后提交
+        [self backToTopicPage];
     }
     else if (btn.tag == kCommitRightButtonTag)
     {
@@ -481,6 +521,19 @@
         
         MyTeacherViewController *myTeacherVC = [[MyTeacherViewController alloc]initWithNibName:@"MyTeacherViewController" bundle:nil];
         [self.navigationController pushViewController:myTeacherVC animated:YES];
+    }
+}
+
+#pragma mark - 返回topic详情页
+- (void)backToTopicPage
+{
+    for (UIViewController *viewControllers in self.navigationController.viewControllers)
+    {
+        if ([viewControllers isKindOfClass:[TPCCheckpointViewController class]])
+        {
+            [self.navigationController popToViewController:viewControllers animated:YES];
+            break;
+        }
     }
 }
 

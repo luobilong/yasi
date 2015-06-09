@@ -8,6 +8,31 @@
 
 #import "TopicParentsViewController.h"
 
+#import "CircleProgressView.h"
+
 @interface CheckTestViewController : TopicParentsViewController
+@property (strong, nonatomic) IBOutlet UIView *topBackView;
+@property (strong, nonatomic) IBOutlet UILabel *sumTimeLabel;
+@property (strong, nonatomic) IBOutlet UIView *teaBackView;
+@property (strong, nonatomic) IBOutlet UIImageView *teaCircleImageView;
+@property (strong, nonatomic) IBOutlet UIButton *tea_show_btn;
+- (IBAction)showQuestionText:(id)sender;
+@property (strong, nonatomic) IBOutlet UILabel *teaDesLabel;
+
+@property (strong, nonatomic) IBOutlet UIImageView *teaHeadImageV;
+
+
+//@property (strong, nonatomic) IBOutlet UIButton *teaHeadBtn;
+@property (strong, nonatomic) IBOutlet UILabel *tipLabel;
+@property (strong, nonatomic) IBOutlet UIView *stuBackView;
+//@property (strong, nonatomic) IBOutlet UIButton *stuHeadBtn;
+@property (strong, nonatomic) IBOutlet CircleProgressView *circleProgressView;
+@property (weak, nonatomic) IBOutlet UIButton *followBtn;
+- (IBAction)followButtonClicked:(id)sender;
+@property (strong, nonatomic) IBOutlet UIImageView *stuHeadImageV;
+
+@property (strong, nonatomic) IBOutlet UIButton *commitButtonLeft;
+@property (strong, nonatomic) IBOutlet UIButton *commitButtonRight;
+- (IBAction)commitButtonClicked:(id)sender;
 
 @end
