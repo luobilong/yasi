@@ -9,7 +9,7 @@
 #import "LogInViewController.h"
 #import "TopicMainViewController.h"
 #import "RegisterViewController.h"
-
+#import "NSURLConnectionRequest.h"
 
 @interface LogInViewController ()<UITextFieldDelegate>
 
@@ -22,7 +22,43 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    _appNameLabel.textColor = kPart_Button_Color;
+    // 修改frame
+    self.view.frame = CGRectMake(0, 0, kScreentWidth, kScreenHeight);
+    [self uiConfig];
+    _backV.frame = self.view.bounds;
+    [self.view sendSubviewToBack:_backV];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+}
+
+- (void)uiConfig
+{
+    
+    NSInteger logo_y = 80.0/667*kScreenHeight;
+    NSInteger logo_h = 70.0/667*kScreenHeight;
+    _logoImgV.frame = CGRectMake(0, logo_y, kScreentWidth, logo_h);
+    
+    NSInteger control_H = 40.0/667*kScreenHeight;
+    NSInteger space_H = 30.0/667*kScreenHeight;
+    
+    NSInteger nameTextFie_Y = 205.0/667*kScreenHeight;
+    _userNameTextFiled.frame = CGRectMake((kScreentWidth-240)/2, nameTextFie_Y, 240, control_H);
+    
+    NSInteger passwordTextFie_Y = 584.0/1334*kScreenHeight;
+    _passWordTextField.frame = CGRectMake((kScreentWidth-240)/2, passwordTextFie_Y, 240, control_H);
+    
+    
+    float logBack_Y = 408.0/667.0*kScreenHeight;
+    _loginBackView.frame = CGRectMake(0, logBack_Y, kScreentWidth, space_H);
+    _loginBackView.backgroundColor = [UIColor clearColor];
+    [_logInButton setFrame:CGRectMake(0, 0, kScreentWidth/2, space_H)];
+    _logInButton.backgroundColor =[UIColor clearColor];
+    _registerButton.backgroundColor =[UIColor clearColor];
+    [_registerButton setFrame:CGRectMake(kScreentWidth/2, 0, kScreentWidth/2, space_H)];
     
     _userNameTextFiled.backgroundColor = [UIColor whiteColor];
     _userNameTextFiled.layer.masksToBounds = YES;
@@ -39,8 +75,6 @@
     _passWordTextField.layer.borderWidth = 1;
     _passWordTextField.layer.borderColor = kPart_Button_Color.CGColor;
     _passWordTextField.textColor = kPart_Button_Color;
-    
-    _loginBackView.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -71,6 +105,35 @@
 */
 
 - (IBAction)loginButtonClicked:(id)sender
+{
+    if ([_userNameTextFiled.text length]>0&&[_passWordTextField.text length]>0)
+    {
+        NSString *paramStr = [NSString stringWithFormat:@"accountname=%@&password=%@",_userNameTextFiled.text,_passWordTextField.text] ;
+        NSString *logInUrlStr = [NSString stringWithFormat:@"%@%@",kBaseIPUrl,kLogInUrl];
+        [NSURLConnectionRequest requestPOSTUrlString:logInUrlStr andParamStr:paramStr target:self action:@selector(requestFinished:) andRefresh:YES];
+    }
+}
+
+- (void)requestFinished:(NSURLConnectionRequest *)request
+{
+    if (request.downloadData)
+    {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:request.downloadData options:0 error:nil];
+        NSLog(@"%@",dict);
+        if ([[dict objectForKey:@"respCode"] integerValue] == 1000)
+        {
+            // 登陆成功 保存个人信息
+            NSString *userid = [[[dict objectForKey:@"studentInfos"] lastObject] objectForKey:@"studentid"];
+            NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
+            [def setValue:userid forKey:@"UserID"];
+            [def synchronize];
+            // 跳转页面
+            [self enterTopic];
+        }
+    }
+}
+
+- (void)enterTopic
 {
     TopicMainViewController *topicVC = [[TopicMainViewController alloc]init];
     UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:topicVC];

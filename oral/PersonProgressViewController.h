@@ -10,11 +10,7 @@
 #import "CustomProgressView.h"
 
 @interface PersonProgressViewController : TopicParentsViewController
-@property (strong, nonatomic) IBOutlet UIView *topBackView;
-@property (strong, nonatomic) IBOutlet UILabel *titleLabel;
-@property (strong, nonatomic) IBOutlet UILabel *timeLAbel;
-@property (strong, nonatomic) IBOutlet CustomProgressView *progressV;
-@property (strong, nonatomic) IBOutlet UILabel *progressLabel;
 
+@property (nonatomic,copy) NSString *userId;
 
 @end

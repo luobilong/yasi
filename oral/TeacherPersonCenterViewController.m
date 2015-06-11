@@ -8,13 +8,20 @@
 
 #import "TeacherPersonCenterViewController.h"
 #import "PersonClassViewController.h"
+#import "NSURLConnectionRequest.h"
+#import "TeacherCell.h"
+#import "TeacherHeadView.h"
+#import "UIImageView+WebCache.h"
 
 
-@interface TeacherPersonCenterViewController ()<UIScrollViewDelegate>
+@interface TeacherPersonCenterViewController ()<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     NSArray *_pictureArray;
+    NSArray *_infoListArray;
     NSTimer *_picShowTimer;
     NSInteger _currentImageIndex;
+    
+    UITableView *_tableV;
 }
 @end
 
@@ -31,34 +38,134 @@
     [self addBackButtonWithImageName:@"back-Blue"];
     [self addTitleLabelWithTitleWithTitle:@"某某老师"];
     
-    _pictureArray = @[[UIImage imageNamed:@"teacher_Back"],[UIImage imageNamed:@"class_introduce_back"],[UIImage imageNamed:@"teacher_Back"],[UIImage imageNamed:@"teacher_Back"]];
-
+    self.navTopView.backgroundColor  = _backgroundViewColor;
     
-    NSInteger scrollVHeight = kScreentWidth*12/25;
     CGRect rec = _topScrollV.frame;
     rec.size.width = kScreentWidth;
-    rec.size.height = scrollVHeight;
     _topScrollV.frame = rec;
     
     _topScrollV.delegate = self;
-    _topScrollV.contentSize = CGSizeMake(kScreentWidth*_pictureArray.count, scrollVHeight);
     _topScrollV.pagingEnabled = YES;
-    [self createShowImageView];
+    _topScrollV.backgroundColor = _backgroundViewColor;
+    [self requestTeacherInfo];
+    
+    _tableV = [[UITableView alloc]initWithFrame:CGRectMake(0, 65+_topScrollV.frame.size.height+2, kScreentWidth, kScreenHeight-_topScrollV.frame.size.height-67) style:UITableViewStylePlain];
+    _tableV.delegate = self;
+    _tableV.dataSource = self;
+    _tableV.backgroundColor = _backgroundViewColor;
+    _tableV.separatorColor = _backgroundViewColor;
+    [self.view addSubview:_tableV];
+    
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _infoListArray.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellId = @"TeacherCell";
+    TeacherCell *cell = [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (cell == nil)
+    {
+        cell = [[[NSBundle mainBundle]loadNibNamed:@"TeacherCell" owner:self options:0] lastObject];
+    }
+    NSDictionary *dict = [_infoListArray objectAtIndex:indexPath.row];
+    cell.cateLabel.textColor = kText_Color;
+    cell.desLabel.textColor = kText_Color;
+    cell.cateLabel.text = [dict objectForKey:@"infotype"];
+    cell.desLabel.text = [dict objectForKey:@"content"];
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 75;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 80;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    TeacherHeadView *headV = [[[NSBundle mainBundle]loadNibNamed:@"TeacherHeadView" owner:self options:0] lastObject];
+    [headV setFrame:CGRectMake(0, 0, kScreentWidth, 80)];
+    headV.backgroundColor = [UIColor whiteColor];
+    [headV.teaHeadImageV setImageWithURL:[NSURL URLWithString:[_teacherDic objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"class_teacher_head"]];
+    headV.teaTitleLabel.text = [_teacherDic objectForKey:@"teachername"];
+    headV.teaDesLabel.text = [[[_teacherDic objectForKey:@"teacherinfo"] lastObject] objectForKey:@"content"];
+    
+    return headV;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 40;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btn setFrame:CGRectMake(0, 0, kScreentWidth, 40)];
+    [btn setBackgroundImage:[UIImage imageNamed:@"person_center_cellBack"] forState:UIControlStateNormal];
+    [btn setTitleColor:kText_Color forState:UIControlStateNormal];
+    [btn setTitle:@"班级列表" forState:UIControlStateNormal];
+    btn.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//    但是问题又出来，此时文字会紧贴到做边框，我们可以设置
+    btn.contentEdgeInsets = UIEdgeInsetsMake(0,15, 0, 0);
+//    使文字距离做边框保持10个像素的距离。
+    btn.titleLabel.font =  [UIFont systemFontOfSize:kFontSize1];
+    [btn addTarget:self action:@selector(enterTeaClassList) forControlEvents:UIControlEventTouchUpInside];
+    return btn;
+}
+
+#pragma mark - 网络请求
+- (void)requestTeacherInfo
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@?teacherId=%@",kBaseIPUrl,kSelectTeacherUrl,_teacherId];
+    NSLog(@"%@",urlStr);
+    [NSURLConnectionRequest requestWithUrlString:urlStr target:self aciton:@selector(requestFinished:) andRefresh:YES];
+}
+
+- (void)requestFinished:(NSURLConnectionRequest *)request
+{
+    if ([request.downloadData length]>0)
+    {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:request.downloadData options:0 error:nil];
+        if ([[dict objectForKey:@"respCode"] intValue] == 1000)
+        {
+            //
+            NSLog(@"%@",dict);
+            
+            _pictureArray = [dict objectForKey:@"teacherimagelist"];
+            _infoListArray = [dict objectForKey:@"teacherinfolist"];
+            [self createShowImageView];
+            [_tableV reloadData];
+        }
+    }
 }
 
 #pragma mark - 根据数据创建图片View
 - (void)createShowImageView
 {
-    CGRect rect = _topScrollV.bounds;
+    _topScrollV.contentSize = CGSizeMake(kScreentWidth*_pictureArray.count, _topScrollV.frame.size.height);
+    CGRect rect = _topScrollV.frame;
 
     NSInteger _pageControl_H = 20;
     NSInteger _pageControl_Y = rect.size.height+65 - _pageControl_H;
     NSInteger _pageControl_X = (kScreentWidth-20*_pictureArray.count-10)/2;
     for (int i = 0; i < _pictureArray.count; i ++)
     {
-        rect.origin.x = i * kScreentWidth;
-        UIImageView *imgV = [[UIImageView alloc]initWithFrame:rect];
-        imgV.image = [_pictureArray objectAtIndex:i];
+        UIImageView *imgV = [[UIImageView alloc]initWithFrame:CGRectMake(i*kScreentWidth, 0, kScreentWidth, _topScrollV.frame.size.height)];
+        [imgV setImageWithURL:[NSURL URLWithString:[[_pictureArray objectAtIndex:i] objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"teacher_Back"]];
         [_topScrollV addSubview:imgV];
         
         UIButton *pageButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -76,8 +183,12 @@
         }
         [self.view bringSubviewToFront:pageButton];
     }
-    _currentImageIndex = 0;
-    _picShowTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(changPicture) userInfo:nil repeats:YES];
+    if (_picShowTimer==nil)
+    {
+        _currentImageIndex = 0;
+        _picShowTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(changPicture) userInfo:nil repeats:YES];
+    }
+    
 }
 
 #pragma mark -切换图片
@@ -124,6 +235,27 @@
     
 }
 
+
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+//    [_picShowTimer invalidate];
+//    _picShowTimer = nil;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+//    NSLog(@"%@",_pictureArray);
+//    if (_pictureArray!=nil&&_picShowTimer==nil)
+//    {
+//        _currentImageIndex = 0;
+//        _picShowTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(changPicture) userInfo:nil repeats:YES];
+//    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -139,10 +271,14 @@
 }
 */
 
-- (IBAction)class_list_button_clicked:(id)sender
+- (void)enterTeaClassList
 {
     PersonClassViewController *personClassVC = [[PersonClassViewController alloc]initWithNibName:@"PersonClassViewController" bundle:nil];
+    personClassVC.pageTitleString = [NSString stringWithFormat:@"%@老师的班级",[_teacherDic objectForKey:@"teachername"]];
+    personClassVC.teacherId = _teacherId;
     [self.navigationController pushViewController:personClassVC animated:YES];
 }
+  
+
 
 @end
