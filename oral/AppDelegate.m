@@ -24,9 +24,9 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
     
-    NSUserDefaults *def = [NSUserDefaults standardUserDefaults];
-    if ([def objectForKey:@"UserID"])
+    if ([OralDBFuncs getCurrentUserName])
     {
+        [OralDBFuncs updateUserLastLoginTimeStamp:[OralDBFuncs getCurrentUserName]];
         TopicMainViewController *rootVC = [[TopicMainViewController alloc]init];
         UINavigationController *topicNvc = [[UINavigationController alloc]initWithRootViewController:rootVC];
         topicNvc.navigationBarHidden = YES;
@@ -37,8 +37,7 @@
          LogInViewController *logInVC = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
          self.window.rootViewController = logInVC;
     }
-//    LogInViewController *logInVC = [[LogInViewController alloc]initWithNibName:@"LogInViewController" bundle:nil];
-//    self.window.rootViewController = logInVC;
+    
     if (![OralDBFuncs initializeDb])
     {
         NSLog(@"init DB fail");
