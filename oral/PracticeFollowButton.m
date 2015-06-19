@@ -1,32 +1,30 @@
 //
-//  CircleProgressView.m
+//  PracticeFollowButton.m
 //  oral
 //
-//  Created by cocim01 on 15/5/22.
+//  Created by cocim01 on 15/6/18.
 //  Copyright (c) 2015年 keximeng. All rights reserved.
 //
 
-#import "CircleProgressView.h"
+#import "PracticeFollowButton.h"
 
-@implementation CircleProgressView
+@implementation PracticeFollowButton
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         
+        [self setBackgroundImage:[UIImage imageNamed:@"Practise_follow_s"] forState:UIControlStateSelected];
+        [self setBackgroundImage:[UIImage imageNamed:@"Practise_follow"] forState:UIControlStateNormal];
         [self drawShapeLayer];
     }
     return self;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)coder
+- (void)awakeFromNib
 {
-    self = [super initWithCoder:coder];
-    if (self) {
-        [self drawShapeLayer];
-    }
-    return self;
+    [self drawShapeLayer];
 }
 
 - (void)drawShapeLayer

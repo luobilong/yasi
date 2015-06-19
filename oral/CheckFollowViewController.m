@@ -250,7 +250,7 @@
     
     [OralDBFuncs setCurrentPoint:1];
     
-    _answerTime = 15;
+    _answerTime = KAnswerSumTime;
     audioPlayer = [AudioPlayer getAudioManager];
     audioPlayer.target = self;
     audioPlayer.action = @selector(playerCallBack);
@@ -453,7 +453,6 @@
 - (void)startSBCAiengine
 {
     NSString *text = [[_currentAnswerListArray objectAtIndex:_currentAnswerCounts] objectForKey:@"answer"];
-    NSLog(@"~~~~~~~~~%@~~~~~~~~~~",text);
     if(_dfEngine)
         [_dfEngine startEngineFor:[self filterHTML:text]];
 }
@@ -481,18 +480,20 @@
     
 }
 
-//#pragma mark - 展示每个单词发音情况
-//- (void)showHtmlMsg:(NSString *)htmlStr
-//{
-//    _currentAnswerHtml = htmlStr;
-//    // 展示每个单词发音情况
-//    [_answerTextWebView loadHTMLString:htmlStr baseURL:nil];
-//}
 
 
 #pragma mark - 思必驰反馈信息
 - (void)showResult:(DFAiengineSentResult *)result
 {
+    
+    // 若思必驰出错 停止
+    if (_reduceTimer)
+    {
+        [_reduceTimer invalidate];
+        _reduceTimer = nil;
+        _answerButton.selected = NO;
+    }
+    
     // 获取录音时长
     long recordTime = result.systime;
     // 增加录音时长
@@ -518,12 +519,14 @@
     _currentAnswerPron = result.pron;
     _currentAnswerAudioName = [[sbcToPath componentsSeparatedByString:@"/"] lastObject];
     _currentAnswerReferAudioName = [[_currentAnswerListArray objectAtIndex:_currentAnswerCounts] objectForKey:@"audiourl"];
+    NSLog(@"%@",_currentAnswerReferAudioName);
     _currentAnswerId = [[_currentAnswerListArray objectAtIndex:_currentAnswerCounts] objectForKey:@"id"];
+    NSLog(@"%@",_currentAnswerId);
     
     NSLog(@"%d",[OralDBFuncs getCurrentPart]);
     
     // 存储一条记录 到数据库
-    BOOL saveSuccess = [OralDBFuncs replaceLastRecordFor:[OralDBFuncs getCurrentUserName] TopicName:[OralDBFuncs getCurrentTopic] answerId:_currentAnswerId partNum:[OralDBFuncs getCurrentPart] levelNum:[OralDBFuncs getCurrentPoint] withRecordId:[OralDBFuncs getCurrentRecordId] lastText:_currentAnswerHtml lastScore:_currentAnswerScore lastPron:_currentAnswerPron lastIntegrity:_currentAnswerIntegrity lastFluency:_currentAnswerFluency lastAudioName:_currentAnswerReferAudioName];
+    BOOL saveSuccess = [OralDBFuncs replaceLastRecordFor:[OralDBFuncs getCurrentUserName] TopicName:[OralDBFuncs getCurrentTopic] answerId:_currentAnswerId partNum:[OralDBFuncs getCurrentPart] levelNum:[OralDBFuncs getCurrentPoint] withRecordId:[OralDBFuncs getCurrentRecordId] lastText:_currentAnswerHtml lastScore:_currentAnswerScore lastPron:_currentAnswerPron lastIntegrity:_currentAnswerIntegrity lastFluency:_currentAnswerFluency lastAudioName:_currentAnswerAudioName];
     NSLog(@"saveSuccess:%d",saveSuccess);
     
     _timeProgressLabel.hidden = YES;// 隐藏时间进度条
@@ -626,25 +629,19 @@
     
      // 此处将当前练习数据加入练习簿
     NSString *_tipStr;
-    if ([OralDBFuncs isInPracticeBook:[OralDBFuncs getCurrentUserName] withAnswerId:_currentAnswerId])
+    // 加入练习簿
+    BOOL suc = [OralDBFuncs addPracticeBookRecordFor:[OralDBFuncs getCurrentUserName] withAnswerId:_currentAnswerId andReferAudioName:_currentAnswerReferAudioName andLastAUdioName:_currentAnswerAudioName andLastText:_currentAnswerHtml andLastScore:_currentAnswerScore Pron:_currentAnswerPron Integrity:_currentAnswerIntegrity fluency:_currentAnswerFluency];
+    NSLog(@"%d",suc);
+    if (suc)
     {
-        // 已加入过
-        _tipStr = @"练习簿已存在该题";
+        _tipStr = @"成功加入练习簿";
+        NSString *text = [[_currentAnswerListArray objectAtIndex:_currentAnswerCounts] objectForKey:@"answer"];
+        
+        [OralDBFuncs setAddPracticeTopic:[OralDBFuncs getCurrentTopic] UserName:[OralDBFuncs getCurrentUserName] AnswerId:_currentAnswerId   AnswerText:text];
     }
     else
     {
-        // 加入练习簿
-        BOOL suc = [OralDBFuncs addPracticeBookRecordFor:[OralDBFuncs getCurrentUserName] withAnswerId:_currentAnswerId andReferAudioName:_currentAnswerAudioName];
-        NSLog(@"%d",suc);
-        [OralDBFuncs updatePracticeBookRecordFor:[OralDBFuncs getCurrentUserName] withAnswerId:_currentAnswerId andResultText:_currentAnswerHtml score:_currentAnswerScore pron:_currentAnswerPron integrity:_currentAnswerIntegrity fluency:_currentAnswerFluency andLastAudioName:_currentAnswerAudioName];
-        if (suc)
-        {
-            _tipStr = @"成功加入练习簿";
-        }
-        else
-        {
-            _tipStr = @"加入练习本失败";
-        }
+        _tipStr = @"加入练习簿失败";
     }
 
     // 给用户提示  加入是否成功
@@ -655,7 +652,7 @@
     [UIView animateWithDuration:0.5 animations:^{
         tipLab.frame = rect;
     }];
-    tipLab.text = @"成功加入练习簿";
+    tipLab.text = _tipStr;
     tipLab.textColor = _pointColor;
     _reduceTimer = [NSTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(addBookFinished) userInfo:nil repeats:NO];
 }
@@ -683,7 +680,7 @@
 - (void)jugePointIsFinished_follow
 {
     [self stopReduceTimer];
-    _answerTime = 15;
+    _answerTime = KAnswerSumTime;
     // 隐藏下一问题按钮区域
     _nextButton.hidden = YES;
     _addPracticeButton.hidden = YES;
@@ -746,6 +743,7 @@
         }
     }
 }
+
 
 
 
