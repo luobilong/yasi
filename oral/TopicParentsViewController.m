@@ -12,7 +12,9 @@
 
 
 @interface TopicParentsViewController ()
-
+{
+    UILabel *_tipLabel;
+}
 @end
 
 @implementation TopicParentsViewController
@@ -43,6 +45,7 @@
     _badColor = [UIColor colorWithRed:255/255.0 green:63/255.0 blue:37/255.0 alpha:1];
     _perfColor = [UIColor colorWithRed:0 green:231/255.0 blue:136/255.0 alpha:1];
     _goodColor = [UIColor colorWithRed:250/255.0 green:220/255.0 blue:18/255.0 alpha:1];
+    [self createLoadingView];
 }
 
 // 返回按钮
@@ -65,7 +68,7 @@
 {
     _titleLab = [[UILabel alloc]initWithFrame:CGRectMake(60, 26, kScreentWidth-60*2, 40)];
     _titleLab.textColor = _titleTextColor;
-    _titleLab.font = [UIFont systemFontOfSize:kTitleFontSize];
+    _titleLab.font = [UIFont systemFontOfSize:kTitleFontSize_17];
     _titleLab.textAlignment = NSTextAlignmentCenter;
     _titleLab.text = title;
     [self.navTopView addSubview:_titleLab];
@@ -97,6 +100,66 @@
 {
     return NO; // 返回NO表示要显示，返回YES将hiden
 }
+
+
+- (NSString *)getPathWithTopic:(NSString *)topicName IsPart:(BOOL)isPart
+{
+    NSArray *sectionArr = @[@"topicTest",@"topicResource"];
+    return [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@/%@",topicName,[sectionArr objectAtIndex:isPart]];
+}
+
+
+- (void)changeLoadingViewTitle:(NSString *)title
+{
+    _tipLabel.text = title;
+}
+
+- (void)createLoadingView
+{
+    _loading_View = [[UIView alloc]initWithFrame:self.view.bounds];
+    _loading_View.hidden = YES;
+    _loading_View.backgroundColor = [UIColor colorWithWhite:100/255.0 alpha:0.2];
+    
+    NSInteger action_View_W = 300.0/375.0*kScreentWidth;
+    NSInteger action_View_H = 200.0/667.0*kScreenHeight;
+    
+    UIView *actionView = [[UIView alloc]initWithFrame:CGRectMake((kScreentWidth-200)/2, kScreenHeight/2-100, action_View_W, action_View_H)];
+    actionView.layer.masksToBounds = YES;
+    actionView.layer.cornerRadius = 5;
+    actionView.layer.borderWidth = 1;
+    actionView.layer.borderColor = kPart_Button_Color.CGColor;
+    
+    actionView.backgroundColor = [UIColor whiteColor];
+    
+    NSInteger action_W = 80;
+    NSInteger tipLabel_H = 40;
+    
+    
+//    UIActivityIndicatorView *action = [[UIActivityIndicatorView alloc]initWithFrame:CGRectMake((action_View_W-action_W)/2, (action_View_H-action_W-tipLabel_H)/2, action_W, action_W)];
+//    action.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+//    [actionView addSubview:action];
+//    [action startAnimating];
+    
+    UIImageView *loadingImgV = [[UIImageView alloc]initWithFrame:CGRectMake((action_View_W-action_W)/2, (action_View_H-action_W-tipLabel_H)/2, action_W, action_W)];
+    loadingImgV.animationDuration = 2;
+    loadingImgV.animationImages = @[[UIImage imageNamed:@"Loading_1"],[UIImage imageNamed:@"Loading_2"],[UIImage imageNamed:@"Loading_3"],[UIImage imageNamed:@"Loading_4"],[UIImage imageNamed:@"Loading_5"],[UIImage imageNamed:@"Loading_6"],[UIImage imageNamed:@"Loading_7"],[UIImage imageNamed:@"Loading_8"]];
+    loadingImgV.animationRepeatCount = -1;
+    [actionView addSubview:loadingImgV];
+    [loadingImgV startAnimating];
+    
+    _tipLabel= [[UILabel alloc]initWithFrame:CGRectMake(0,action_W+loadingImgV.frame.origin.y, actionView.frame.size.width, tipLabel_H)];
+    _tipLabel.textAlignment = NSTextAlignmentCenter;
+    _tipLabel.textColor = kPart_Button_Color;
+    _tipLabel.font = [UIFont systemFontOfSize:kFontSize_14];
+    _tipLabel.numberOfLines = 0;
+    [actionView addSubview:_tipLabel];
+    
+    actionView.center = _loading_View.center;
+    [_loading_View addSubview:actionView];
+    [self.view addSubview:_loading_View];
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

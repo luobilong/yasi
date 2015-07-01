@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FD4366D11B3D2C6A000BE3CA /* DeviceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FD4366D01B3D2C6A000BE3CA /* DeviceManager.m */; };
 		FD530E351B29612300E3EC26 /* aiengine.provision in Resources */ = {isa = PBXBuildFile; fileRef = FD530E331B29612300E3EC26 /* aiengine.provision */; };
 		FD530E361B29612300E3EC26 /* aiengine.resource.zip in Resources */ = {isa = PBXBuildFile; fileRef = FD530E341B29612300E3EC26 /* aiengine.resource.zip */; };
 		FD530E3B1B29619000E3EC26 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD530E3A1B29619000E3EC26 /* libz.1.1.3.dylib */; };
@@ -66,11 +67,12 @@
 		FD6244A41B0585450037836E /* TPCCheckpointViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD6244A21B0585450037836E /* TPCCheckpointViewController.xib */; };
 		FD6244A81B0585820037836E /* CheckFollowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD6244A61B0585820037836E /* CheckFollowViewController.m */; };
 		FD6244A91B0585820037836E /* CheckFollowViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD6244A71B0585820037836E /* CheckFollowViewController.xib */; };
+		FD66D1501B4142D100194C9A /* AboutMeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD66D14E1B4142D100194C9A /* AboutMeViewController.m */; };
+		FD66D1511B4142D100194C9A /* AboutMeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD66D14F1B4142D100194C9A /* AboutMeViewController.xib */; };
 		FD6AB7511B2AB6AC004721A7 /* df_oral.db in Resources */ = {isa = PBXBuildFile; fileRef = FD6AB7501B2AB6AC004721A7 /* df_oral.db */; };
 		FD6AB7541B2ABDBC004721A7 /* OralDBFuncs.m in Sources */ = {isa = PBXBuildFile; fileRef = FD6AB7531B2ABDBC004721A7 /* OralDBFuncs.m */; };
 		FD6B80D41B1843FF00F9562C /* NSString+CalculateStringSize.m in Sources */ = {isa = PBXBuildFile; fileRef = FD6B80D31B1843FF00F9562C /* NSString+CalculateStringSize.m */; };
 		FD6FC7601B3109BC00CE143F /* SaveRecordTime.m in Sources */ = {isa = PBXBuildFile; fileRef = FD6FC75F1B3109BC00CE143F /* SaveRecordTime.m */; };
-		FD6FC7671B312F0C00CE143F /* libDFAiengineSentObject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD6FC7661B312F0C00CE143F /* libDFAiengineSentObject.a */; };
 		FD6FC7681B31302500CE143F /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD99586B1B1313B6005892DB /* libz.dylib */; };
 		FD73CBAF1B30340200979B1A /* LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = FD73CBAE1B30340200979B1A /* LoadingView.m */; };
 		FD73CBB11B30340E00979B1A /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD73CBB01B30340E00979B1A /* LoadingView.xib */; };
@@ -116,6 +118,10 @@
 		FD99590E1B1328FB005892DB /* AFURLRequestSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9959031B1328FB005892DB /* AFURLRequestSerialization.m */; };
 		FD99590F1B1328FB005892DB /* AFURLResponseSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9959051B1328FB005892DB /* AFURLResponseSerialization.m */; };
 		FD9959101B1328FB005892DB /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9959071B1328FB005892DB /* AFURLSessionManager.m */; };
+		FD9B9DCA1B422CB200DBD58B /* MyAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9B9DC81B422CB200DBD58B /* MyAccountViewController.m */; };
+		FD9B9DCB1B422CB200DBD58B /* MyAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD9B9DC91B422CB200DBD58B /* MyAccountViewController.xib */; };
+		FD9B9DCF1B427D9200DBD58B /* SystemSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD9B9DCD1B427D9200DBD58B /* SystemSettingViewController.m */; };
+		FD9B9DD01B427D9200DBD58B /* SystemSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FD9B9DCE1B427D9200DBD58B /* SystemSettingViewController.xib */; };
 		FDA0C2511B1412AA00900F49 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = FDA0C23D1B1412AA00900F49 /* LICENSE */; };
 		FDA0C2521B1412AA00900F49 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = FDA0C23E1B1412AA00900F49 /* README.md */; };
 		FDA0C2531B1412AA00900F49 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA0C2401B1412AA00900F49 /* SDImageCache.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -134,6 +140,10 @@
 		FDA25E161B0DC31900F35545 /* CheckKeyWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA25E141B0DC31900F35545 /* CheckKeyWordViewController.m */; };
 		FDA25E171B0DC31900F35545 /* CheckKeyWordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDA25E151B0DC31900F35545 /* CheckKeyWordViewController.xib */; };
 		FDA25E1B1B0DD98D00F35545 /* RecordManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FDA25E1A1B0DD98D00F35545 /* RecordManager.m */; };
+		FDAFE0F91B4379C7002D7EEE /* libDFAiengineSentObject.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFE0F81B4379C7002D7EEE /* libDFAiengineSentObject.a */; };
+		FDAFE0FB1B4379D2002D7EEE /* libDFAiengineSentObject2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAFE0FA1B4379D2002D7EEE /* libDFAiengineSentObject2.a */; };
+		FDAFE0FF1B43861F002D7EEE /* LoadingViews.m in Sources */ = {isa = PBXBuildFile; fileRef = FDAFE0FE1B43861F002D7EEE /* LoadingViews.m */; };
+		FDAFE1031B43B848002D7EEE /* TopicInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FDAFE1021B43B848002D7EEE /* TopicInfoManager.m */; };
 		FDBA32EB1B1C389200C02BF8 /* Score_Point3_Section_View.m in Sources */ = {isa = PBXBuildFile; fileRef = FDBA32EA1B1C389200C02BF8 /* Score_Point3_Section_View.m */; };
 		FDBA32ED1B1C38A000C02BF8 /* Score_Point3_Section_View.xib in Resources */ = {isa = PBXBuildFile; fileRef = FDBA32EC1B1C38A000C02BF8 /* Score_Point3_Section_View.xib */; };
 		FDBA32F11B1C38E600C02BF8 /* Score_Point3_Cell.m in Sources */ = {isa = PBXBuildFile; fileRef = FDBA32EF1B1C38E600C02BF8 /* Score_Point3_Cell.m */; };
@@ -173,6 +183,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		FD4366CF1B3D2C6A000BE3CA /* DeviceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceManager.h; sourceTree = "<group>"; };
+		FD4366D01B3D2C6A000BE3CA /* DeviceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceManager.m; sourceTree = "<group>"; };
 		FD530E331B29612300E3EC26 /* aiengine.provision */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = aiengine.provision; sourceTree = "<group>"; };
 		FD530E341B29612300E3EC26 /* aiengine.resource.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = aiengine.resource.zip; sourceTree = "<group>"; };
 		FD530E391B29615B00E3EC26 /* DFAiengineSentObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DFAiengineSentObject.h; sourceTree = "<group>"; };
@@ -263,6 +275,9 @@
 		FD6244A51B0585820037836E /* CheckFollowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckFollowViewController.h; sourceTree = "<group>"; };
 		FD6244A61B0585820037836E /* CheckFollowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CheckFollowViewController.m; sourceTree = "<group>"; };
 		FD6244A71B0585820037836E /* CheckFollowViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckFollowViewController.xib; sourceTree = "<group>"; };
+		FD66D14D1B4142D100194C9A /* AboutMeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutMeViewController.h; sourceTree = "<group>"; };
+		FD66D14E1B4142D100194C9A /* AboutMeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutMeViewController.m; sourceTree = "<group>"; };
+		FD66D14F1B4142D100194C9A /* AboutMeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutMeViewController.xib; sourceTree = "<group>"; };
 		FD6AB7501B2AB6AC004721A7 /* df_oral.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = df_oral.db; sourceTree = "<group>"; };
 		FD6AB7521B2ABDBC004721A7 /* OralDBFuncs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OralDBFuncs.h; sourceTree = "<group>"; };
 		FD6AB7531B2ABDBC004721A7 /* OralDBFuncs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OralDBFuncs.m; sourceTree = "<group>"; };
@@ -270,7 +285,6 @@
 		FD6B80D31B1843FF00F9562C /* NSString+CalculateStringSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+CalculateStringSize.m"; sourceTree = "<group>"; };
 		FD6FC75E1B3109BC00CE143F /* SaveRecordTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveRecordTime.h; sourceTree = "<group>"; };
 		FD6FC75F1B3109BC00CE143F /* SaveRecordTime.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveRecordTime.m; sourceTree = "<group>"; };
-		FD6FC7661B312F0C00CE143F /* libDFAiengineSentObject.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDFAiengineSentObject.a; sourceTree = "<group>"; };
 		FD73CBAD1B30340200979B1A /* LoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingView.h; sourceTree = "<group>"; };
 		FD73CBAE1B30340200979B1A /* LoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingView.m; sourceTree = "<group>"; };
 		FD73CBB01B30340E00979B1A /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
@@ -350,6 +364,12 @@
 		FD9959051B1328FB005892DB /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLResponseSerialization.m; sourceTree = "<group>"; };
 		FD9959061B1328FB005892DB /* AFURLSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFURLSessionManager.h; sourceTree = "<group>"; };
 		FD9959071B1328FB005892DB /* AFURLSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFURLSessionManager.m; sourceTree = "<group>"; };
+		FD9B9DC71B422CB200DBD58B /* MyAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyAccountViewController.h; sourceTree = "<group>"; };
+		FD9B9DC81B422CB200DBD58B /* MyAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyAccountViewController.m; sourceTree = "<group>"; };
+		FD9B9DC91B422CB200DBD58B /* MyAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyAccountViewController.xib; sourceTree = "<group>"; };
+		FD9B9DCC1B427D9200DBD58B /* SystemSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemSettingViewController.h; sourceTree = "<group>"; };
+		FD9B9DCD1B427D9200DBD58B /* SystemSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SystemSettingViewController.m; sourceTree = "<group>"; };
+		FD9B9DCE1B427D9200DBD58B /* SystemSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SystemSettingViewController.xib; sourceTree = "<group>"; };
 		FDA0C23D1B1412AA00900F49 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		FDA0C23E1B1412AA00900F49 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		FDA0C23F1B1412AA00900F49 /* SDImageCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDImageCache.h; sourceTree = "<group>"; };
@@ -384,6 +404,12 @@
 		FDA25E151B0DC31900F35545 /* CheckKeyWordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CheckKeyWordViewController.xib; sourceTree = "<group>"; };
 		FDA25E191B0DD98D00F35545 /* RecordManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecordManager.h; sourceTree = "<group>"; };
 		FDA25E1A1B0DD98D00F35545 /* RecordManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecordManager.m; sourceTree = "<group>"; };
+		FDAFE0F81B4379C7002D7EEE /* libDFAiengineSentObject.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDFAiengineSentObject.a; sourceTree = "<group>"; };
+		FDAFE0FA1B4379D2002D7EEE /* libDFAiengineSentObject2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libDFAiengineSentObject2.a; sourceTree = "<group>"; };
+		FDAFE0FD1B43861F002D7EEE /* LoadingViews.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingViews.h; sourceTree = "<group>"; };
+		FDAFE0FE1B43861F002D7EEE /* LoadingViews.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingViews.m; sourceTree = "<group>"; };
+		FDAFE1011B43B848002D7EEE /* TopicInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TopicInfoManager.h; sourceTree = "<group>"; };
+		FDAFE1021B43B848002D7EEE /* TopicInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TopicInfoManager.m; sourceTree = "<group>"; };
 		FDBA32E91B1C389200C02BF8 /* Score_Point3_Section_View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Score_Point3_Section_View.h; sourceTree = "<group>"; };
 		FDBA32EA1B1C389200C02BF8 /* Score_Point3_Section_View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Score_Point3_Section_View.m; sourceTree = "<group>"; };
 		FDBA32EC1B1C38A000C02BF8 /* Score_Point3_Section_View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Score_Point3_Section_View.xib; sourceTree = "<group>"; };
@@ -434,8 +460,9 @@
 			files = (
 				FD6FC7681B31302500CE143F /* libz.dylib in Frameworks */,
 				FD530E3F1B2964F500E3EC26 /* libstdc++.6.dylib in Frameworks */,
+				FDAFE0F91B4379C7002D7EEE /* libDFAiengineSentObject.a in Frameworks */,
+				FDAFE0FB1B4379D2002D7EEE /* libDFAiengineSentObject2.a in Frameworks */,
 				FD530E3D1B2961A800E3EC26 /* libiconv.dylib in Frameworks */,
-				FD6FC7671B312F0C00CE143F /* libDFAiengineSentObject.a in Frameworks */,
 				FD530E3B1B29619000E3EC26 /* libz.1.1.3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,6 +477,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		FD4366CE1B3D2C4F000BE3CA /* Device */ = {
+			isa = PBXGroup;
+			children = (
+				FD4366CF1B3D2C6A000BE3CA /* DeviceManager.h */,
+				FD4366D01B3D2C6A000BE3CA /* DeviceManager.m */,
+			);
+			name = Device;
+			sourceTree = "<group>";
+		};
 		FD5461351B1056D000409778 /* 模考 */ = {
 			isa = PBXGroup;
 			children = (
@@ -565,6 +601,15 @@
 				FD5B4FB21B2181CA00BE6F5B /* PersonSettingViewController.h */,
 				FD5B4FB31B2181CA00BE6F5B /* PersonSettingViewController.m */,
 				FD5B4FB41B2181CA00BE6F5B /* PersonSettingViewController.xib */,
+				FD66D14D1B4142D100194C9A /* AboutMeViewController.h */,
+				FD66D14E1B4142D100194C9A /* AboutMeViewController.m */,
+				FD66D14F1B4142D100194C9A /* AboutMeViewController.xib */,
+				FD9B9DC71B422CB200DBD58B /* MyAccountViewController.h */,
+				FD9B9DC81B422CB200DBD58B /* MyAccountViewController.m */,
+				FD9B9DC91B422CB200DBD58B /* MyAccountViewController.xib */,
+				FD9B9DCC1B427D9200DBD58B /* SystemSettingViewController.h */,
+				FD9B9DCD1B427D9200DBD58B /* SystemSettingViewController.m */,
+				FD9B9DCE1B427D9200DBD58B /* SystemSettingViewController.xib */,
 			);
 			name = "设置";
 			sourceTree = "<group>";
@@ -1011,6 +1056,8 @@
 		FDA25E111B0D9EFF00F35545 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				FDAFE1001B43B834002D7EEE /* Topic */,
+				FDAFE0FC1B4385E2002D7EEE /* 加载界面 */,
 				FD6FC7611B3109C100CE143F /* 存储时间 */,
 				FD9958D31B131753005892DB /* 压缩 */,
 				FD5A05811B0ED877002F0756 /* 圆形进度条 */,
@@ -1038,6 +1085,24 @@
 			name = "录音";
 			sourceTree = "<group>";
 		};
+		FDAFE0FC1B4385E2002D7EEE /* 加载界面 */ = {
+			isa = PBXGroup;
+			children = (
+				FDAFE0FD1B43861F002D7EEE /* LoadingViews.h */,
+				FDAFE0FE1B43861F002D7EEE /* LoadingViews.m */,
+			);
+			name = "加载界面";
+			sourceTree = "<group>";
+		};
+		FDAFE1001B43B834002D7EEE /* Topic */ = {
+			isa = PBXGroup;
+			children = (
+				FDAFE1011B43B848002D7EEE /* TopicInfoManager.h */,
+				FDAFE1021B43B848002D7EEE /* TopicInfoManager.m */,
+			);
+			name = Topic;
+			sourceTree = "<group>";
+		};
 		FDBA32E81B1C37DC00C02BF8 /* 关卡3相关View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1060,7 +1125,8 @@
 		FDD404051B0492F900DE2E84 = {
 			isa = PBXGroup;
 			children = (
-				FD6FC7661B312F0C00CE143F /* libDFAiengineSentObject.a */,
+				FDAFE0FA1B4379D2002D7EEE /* libDFAiengineSentObject2.a */,
+				FDAFE0F81B4379C7002D7EEE /* libDFAiengineSentObject.a */,
 				FD530E3E1B2964F500E3EC26 /* libstdc++.6.dylib */,
 				FD530E3C1B2961A800E3EC26 /* libiconv.dylib */,
 				FD530E3A1B29619000E3EC26 /* libz.1.1.3.dylib */,
@@ -1089,6 +1155,7 @@
 		FDD404101B0492F900DE2E84 /* oral */ = {
 			isa = PBXGroup;
 			children = (
+				FD4366CE1B3D2C4F000BE3CA /* Device */,
 				FD73CBAC1B3033EA00979B1A /* LoadingView */,
 				FD6AB7551B2AC88B004721A7 /* DB */,
 				FD6B80CE1B18434400F9562C /* Category */,
@@ -1240,6 +1307,7 @@
 				FD73CBB11B30340E00979B1A /* LoadingView.xib in Resources */,
 				FDD404221B0492F900DE2E84 /* LaunchScreen.xib in Resources */,
 				FD530E361B29612300E3EC26 /* aiengine.resource.zip in Resources */,
+				FD9B9DCB1B422CB200DBD58B /* MyAccountViewController.xib in Resources */,
 				FD9957DC1B12BC02005892DB /* ClassDetailViewController.xib in Resources */,
 				FDD4044D1B04972D00DE2E84 /* RightMainCell.xib in Resources */,
 				FD8C40E71B0C6D8200948B6C /* CheckSuccessViewController.xib in Resources */,
@@ -1280,10 +1348,12 @@
 				FDD404561B049B5B00DE2E84 /* topic2.png in Resources */,
 				FD5FEC3A1B25A33E005B99AF /* PersonEditViewController.xib in Resources */,
 				FDD404541B049B5B00DE2E84 /* topic.png in Resources */,
+				FD9B9DD01B427D9200DBD58B /* SystemSettingViewController.xib in Resources */,
 				FD54613F1B10580A00409778 /* MyTeacherViewController.xib in Resources */,
 				FD97AFB51B17020800C45A2C /* PractiseCell.xib in Resources */,
 				FDA0C2511B1412AA00900F49 /* LICENSE in Resources */,
 				FD8453A51B155D3A00B1E84B /* ScoreMenuTestView.xib in Resources */,
+				FD66D1511B4142D100194C9A /* AboutMeViewController.xib in Resources */,
 				FD97AFA61B16BB8A00C45A2C /* ScoreTestMenuViewController.xib in Resources */,
 				FD5461341B1045B800409778 /* SuccessCell.xib in Resources */,
 				FD6244A41B0585450037836E /* TPCCheckpointViewController.xib in Resources */,
@@ -1334,6 +1404,7 @@
 				FD5E01D21B26F74B00E3ED4B /* PointProgressView.m in Sources */,
 				FDD4041A1B0492F900DE2E84 /* ViewController.m in Sources */,
 				FD8453B21B15A01E00B1E84B /* TableView_headView.m in Sources */,
+				FDAFE0FF1B43861F002D7EEE /* LoadingViews.m in Sources */,
 				FD97AFA51B16BB8A00C45A2C /* ScoreTestMenuViewController.m in Sources */,
 				FD9958F31B1328CB005892DB /* NetManager.m in Sources */,
 				FD5B4FA41B21538600BE6F5B /* ClassDetailCell.m in Sources */,
@@ -1343,12 +1414,14 @@
 				FD9958E51B131794005892DB /* ioapi.c in Sources */,
 				FD78FDE81B326E6900BB4AF6 /* PracticeFollowButton.m in Sources */,
 				FD92C5C81B0ACA8D00B7BE43 /* AudioPlayer.m in Sources */,
+				FD9B9DCF1B427D9200DBD58B /* SystemSettingViewController.m in Sources */,
 				FD99590D1B1328FB005892DB /* AFURLConnectionOperation.m in Sources */,
 				FD97AFAA1B16E11A00C45A2C /* TestReviewCell.m in Sources */,
 				FD8453A31B155D2B00B1E84B /* ScoreMenuTestView.m in Sources */,
 				FD5FEC391B25A33E005B99AF /* PersonEditViewController.m in Sources */,
 				FD5E01A31B26865000E3ED4B /* ConstellationManager.m in Sources */,
 				FD6FC7601B3109BC00CE143F /* SaveRecordTime.m in Sources */,
+				FD9B9DCA1B422CB200DBD58B /* MyAccountViewController.m in Sources */,
 				FD8C40F01B0C6FAB00948B6C /* CheckAskViewController.m in Sources */,
 				FD9958E61B131794005892DB /* mztools.c in Sources */,
 				FD5FEC3E1B25A607005B99AF /* PersonEditCell.m in Sources */,
@@ -1374,6 +1447,8 @@
 				FDD4044C1B04972D00DE2E84 /* RightMainCell.m in Sources */,
 				FD5461541B10676700409778 /* TPCPersonCenterViewController.m in Sources */,
 				FD5E01D81B27001C00E3ED4B /* TeacherCell.m in Sources */,
+				FD4366D11B3D2C6A000BE3CA /* DeviceManager.m in Sources */,
+				FDAFE1031B43B848002D7EEE /* TopicInfoManager.m in Sources */,
 				FD5B4FAF1B2172DC00BE6F5B /* ClassSearchCell.m in Sources */,
 				FD99590E1B1328FB005892DB /* AFURLRequestSerialization.m in Sources */,
 				FD9957E01B12BC1E005892DB /* ClassIntroduceViewController.m in Sources */,
@@ -1391,6 +1466,7 @@
 				FDA0C2521B1412AA00900F49 /* README.md in Sources */,
 				FD9958E41B131794005892DB /* JSONKit.m in Sources */,
 				FDD404141B0492F900DE2E84 /* main.m in Sources */,
+				FD66D1501B4142D100194C9A /* AboutMeViewController.m in Sources */,
 				FD6AB7541B2ABDBC004721A7 /* OralDBFuncs.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

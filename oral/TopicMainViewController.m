@@ -14,6 +14,8 @@
 #import "TPCPersonCenterViewController.h"
 #import "NetManager.h"
 #import "UIButton+WebCache.h"
+#import "OralDBFuncs.h"
+#import "TopicInfoManager.h"
 
 @interface TopicMainViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -30,8 +32,7 @@
 #define kRightTableVIewTag 556
 #define kTopicButtonTag 566
 #define kNavBarHeight 66
-//#define kScreentWidth [UIScreen mainScreen].bounds.size.width
-//#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+
 #define kmainCellHeight ((kScreenHeight-kNavBarHeight)/3)
 #define kRightCellHeight ((kScreenHeight-kNavBarHeight-kmainCellHeight*2/3)/7)
 #define kRightTableY (kScreenHeight-(kRightCellHeight*7)-kNavBarHeight)/2
@@ -84,6 +85,8 @@
         {
             NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:netManager.downLoadData options:0 error:nil];
             _topicArray = [dict objectForKey:@"etctlist"];
+            // 单例存储topic信息
+            [self saveTopicInfo];
             [_topicTableView reloadData];
             [_rightTableView reloadData];
         }
@@ -92,6 +95,16 @@
     {
         // 失败
         NSLog(@"网络错误");
+    }
+}
+
+- (void)saveTopicInfo
+{
+    TopicInfoManager *topicManager = [TopicInfoManager getTopicInfoManager];
+    for (NSDictionary *subDic in _topicArray)
+    {
+        NSString *topicID = [subDic objectForKey:@"id"];
+        [topicManager setTopicDetailInfo:subDic TopicID:topicID];
     }
 }
 
@@ -130,19 +143,15 @@
         [cell.topicButton setImageWithURL:[NSURL URLWithString:[dic objectForKey:@"bgimgurl"]]];
         cell.topicTitle.text = [dic objectForKey:@"classtype"];
         
-//        NSArray *colorArr = [[dic objectForKey:@"classcolor"] componentsSeparatedByString:@","];
-//        if (colorArr.count == 3)
-//        {
-//            NSInteger red = [[colorArr objectAtIndex:0] integerValue];
-//            NSInteger orange = [[colorArr objectAtIndex:1] integerValue];
-//            NSInteger blue = [[colorArr objectAtIndex:2] integerValue];
-//            cell.progressColor = [UIColor colorWithRed:red/255.0 green:orange/255.0 blue:blue/255.0 alpha:1];
-//            
-//        }
+        
         cell.progressColor = kPart_Button_Color;
 
         // 暂时写死  此处是根据本地数据（自己存储的）来算出用户的进度
-        cell.topicProgressV.progress = 0.8;
+        
+        TopicRecord *currentRecord = [OralDBFuncs getTopicRecordFor:[OralDBFuncs getCurrentUserName] withTopic:[dic objectForKey:@"classtype"]];
+        float progress = currentRecord.completion/9.0;
+        
+        cell.topicProgressV.progress = progress;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.topicButton.tag = indexPath.row+kTopicButtonTag;
         [cell.topicButton addTarget:self action:@selector(startPass:) forControlEvents:UIControlEventTouchUpInside];

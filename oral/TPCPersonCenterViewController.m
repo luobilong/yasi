@@ -14,9 +14,9 @@
 #import "NSURLConnectionRequest.h"
 #import "PersonInfoModel.h"
 #import "UIButton+WebCache.h"
+#import "OralDBFuncs.h"
 
-
-@interface TPCPersonCenterViewController ()
+@interface TPCPersonCenterViewController ()<EditDelegate>
 {
     NSDictionary *_personInfoDic;
     NSString *_userId;
@@ -41,7 +41,7 @@
     UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [rightButton setFrame:CGRectMake(kScreentWidth-40, (self.navTopView.frame.size.height-24-20)/2+24, 20, 20)];
     [rightButton setBackgroundImage:[UIImage imageNamed:@"person_setting"] forState:UIControlStateNormal];
-    rightButton.titleLabel.font = [UIFont systemFontOfSize:kFontSize1];
+    rightButton.titleLabel.font = [UIFont systemFontOfSize:kFontSize_14];
     
     [rightButton addTarget:self action:@selector(personSetting) forControlEvents:UIControlEventTouchUpInside];
     
@@ -82,8 +82,9 @@
 #pragma mark - 网络请求
 - (void)requestPersonInfo
 {
-    _userId = [[NSUserDefaults standardUserDefaults]objectForKey:@"UserID"];
+    _userId = [OralDBFuncs getCurrentUserID];
     NSString *urlStr = [NSString stringWithFormat:@"%@%@?userId=%@",kBaseIPUrl,kUserInfoUrl,_userId];
+    NSLog(@"%@",urlStr);
     [NSURLConnectionRequest requestWithUrlString:urlStr target:self aciton:@selector(requestEnd:) andRefresh:YES];
 }
 
@@ -92,8 +93,19 @@
     if ([request.downloadData length])
     {
         NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:request.downloadData options:0 error:nil];
-        _personInfoDic = [[dict objectForKey:@"studentInfos"] lastObject];
-        [self blankPersonInfo];
+        if ([[dict objectForKey:@"respCode"] intValue] == 1000)
+        {
+            _personInfoDic = [[dict objectForKey:@"studentInfos"] lastObject];
+            [self blankPersonInfo];
+        }
+        else
+        {
+        
+        }
+    }
+    else
+    {
+        
     }
 }
 
@@ -108,74 +120,36 @@
     }
     else
     {
-        
+       // 显示默认图片
+        [_personHeadButton setBackgroundImage:[UIImage imageNamed:@"person_head_image"] forState:UIControlStateNormal];
     }
     
-    if ([[_personInfoDic objectForKey:@"birthday"] length]>0)
-    {
-        // 生日
-        NSString *birthday = [_personInfoDic objectForKey:@"birthday"];
-        _birthLabel.text = birthday;
-    }
-    else
-    {
-        
-    }
+    // 生日
+    NSString *birthday = [_personInfoDic objectForKey:@"birthday"];
+    _birthLabel.text = [NSString stringWithFormat:@"生日：%@",birthday];
     
-    if ([[_personInfoDic objectForKey:@"hobbies"] length]>0)
-    {
-        // 爱好
-        NSString *hobbies = [_personInfoDic objectForKey:@"hobbies"];
-        _loveLabel.text = hobbies;
-    }
-    else
-    {
-        
-    }
-
+    // 爱好
+    NSString *hobbies = [_personInfoDic objectForKey:@"hobbies"];
+    _loveLabel.text = [NSString stringWithFormat:@"爱好：%@",hobbies];
     
-    if ([[_personInfoDic objectForKey:@"constellation"] length]>0)
-    {
-        // 星座
-        NSString *constellation = [_personInfoDic objectForKey:@"constellation"];
-        [_ConstellationButton setTitle:constellation forState:UIControlStateNormal];
-    }
-    else
-    {
-        
-    }
+    NSString *constellation = [_personInfoDic objectForKey:@"constellation"];
+    [_ConstellationButton setTitle:constellation forState:UIControlStateNormal];
     
-    if ([[_personInfoDic objectForKey:@"sex"] length]>0)
-    {
-        // 性别
-        NSString *sex = [_personInfoDic objectForKey:@"sex"];
-        [_sexButton setTitle:sex forState:UIControlStateNormal];
-    }
-    else
-    {
-        
-    }
+    NSString *sex = [NSString stringWithFormat:@"%@",[_personInfoDic objectForKey:@"sex"]];
+    [_sexButton setTitle:sex forState:UIControlStateNormal];
     
-    if ([[_personInfoDic objectForKey:@"nickname"] length]>0)
-    {
-        // 昵称
-        NSString *nickname = [_personInfoDic objectForKey:@"nickname"];
-        _nameLabel.text = nickname;
-    }
-    else
-    {
-        
-    }
+    NSString *nickname = [NSString stringWithFormat:@"昵称：%@",[_personInfoDic objectForKey:@"nickname"]];
+    _nameLabel.text = nickname;
     
     if ([[_personInfoDic objectForKey:@"signiture"] length]>0)
     {
         // 个性签名
-        NSString *signiture = [_personInfoDic objectForKey:@"signiture"];\
+        NSString *signiture = [_personInfoDic objectForKey:@"signiture"];
         _signatureLabel.text = signiture;
     }
     else
     {
-        
+        _signatureLabel.text = @"个性签名：未填写";
     }
 }
 
@@ -222,6 +196,16 @@
 {
     // 编辑个人信息
     PersonEditViewController *editVC = [[PersonEditViewController alloc]initWithNibName:@"PersonEditViewController" bundle:nil];
+    editVC.personInfoDict = _personInfoDic;
+    editVC.delegate = self;
     [self.navigationController pushViewController:editVC animated:YES];
 }
+
+
+- (void)editSuccess
+{
+    [self requestPersonInfo];
+}
+
+
 @end

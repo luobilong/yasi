@@ -25,6 +25,8 @@
     UIColor *_perfColor;// 80~100
     UIColor *_goodColor;// 60~80
     UIColor *_badColor;// 0~60
+    
+    UIView *_loading_View;
 }
 @property (nonatomic,strong) UIView *navTopView;// 模拟导航栏背景
 @property (nonatomic,strong) UILabel *lineLab;
@@ -41,5 +43,7 @@
 - (void)addTitleLabelWithTitleWithTitle:(NSString *)title;
 // 返回上一页
 - (void)backToPrePage;
+- (NSString *)getPathWithTopic:(NSString *)topicName IsPart:(BOOL)isPart;
+- (void)changeLoadingViewTitle:(NSString *)title;
 
 @end

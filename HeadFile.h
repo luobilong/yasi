@@ -9,19 +9,18 @@
 #ifndef oral_HeadFile_h
 #define oral_HeadFile_h
 
-#define kScreentWidth [UIScreen mainScreen].bounds.size.width
-#define kScreenHeight [UIScreen mainScreen].bounds.size.height
+#define kScreentWidth ([UIScreen mainScreen].bounds.size.width)
+#define kScreenHeight ([UIScreen mainScreen].bounds.size.height)
 
-#define KOneFontSize 15
-#define KSecondFontSize 14
-#define KThidFontSize 13
-#define KFourFontSize 12
 
-#define kTitleFontSize 16
-#define kFontSize1 14
-#define kFontSize2 12
-#define kFontSize3 10
-#define kFontSize4 8
+
+#define kTitleFontSize_17 (kScreenHeight<600?15:17)
+#define kFontSize_14 (kScreenHeight<600?12:14)
+#define kFontSize_13 (kScreenHeight<600?11:13)
+#define kFontSize_12 (kScreenHeight<600?10:12)
+#define kFontSize_11 (kScreenHeight<600?9:11)
+#define kFontSize_10 (kScreenHeight<600?8:10)
+#define kFontSize_8 (kScreenHeight<600?6:8)
 
 // 练习簿界面
 #define kPract_Listen_self_Button_Tag 4000
@@ -73,6 +72,8 @@
 // 查询用户信息 userId
 #define kUserInfoUrl @"/yasi/student/selectStudentByUserId.do"
 
+#define kAlterPersonInfo @"/yasi/student/insertStudentInfo.do"
+
 /*
  // 用户未加入的班级
  用户ID	userId	M
@@ -94,6 +95,9 @@
 // 学生退出本班
 #define kStuOutClassUrlString @"/yasi/class/deleteClassMemberByStudentId.do"
 
+// 查询班级最新公告信息 参数 ： classId
+#define kSelectClassNewNoticeUrl @"/yasi/classbulletin/selectClassNewBulletin.do"
+
 /*
  // 学生申请加班
  用户ID	userId	M
@@ -104,5 +108,9 @@
  */
 #define kApplyClassUrl @"/yasi/studentJoinApply/insertJoinApply.do"
 
+// 查询学生最新提交给老师的已处理待办事项 参数  userId
+#define kSelectNewWatingEvent @"/yasi/waiting/selectNewWaitingByStudentId.do"
+// 查询已处理待办事项 参数 waitingid
+#define kReviewWatingEvent @"/yasi/waiting/selectWaitingByUserId.do"
 
 #endif

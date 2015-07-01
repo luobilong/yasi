@@ -31,11 +31,6 @@
     [self.view sendSubviewToBack:_backV];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-}
 
 - (void)uiConfig
 {
@@ -126,14 +121,24 @@
         {
             // 登陆成功 保存个人信息
             NSString *userid = [[[dict objectForKey:@"studentInfos"] lastObject] objectForKey:@"studentid"];
+            NSLog(@"%@",dict);
             NSString *userName = [[[dict objectForKey:@"studentInfos"] lastObject] objectForKey:@"studentname"];
             [OralDBFuncs setCurrentUser:userName UserId:userid];
             [OralDBFuncs addUser:userName];
             //更新登录时间 (待殷总确定 此处是否需要)
-//            [OralDBFuncs updateUserLastLoginTimeStamp:userName];
+            [OralDBFuncs updateUserLastLoginTimeStamp:userName];
             // 跳转页面
             [self enterTopic];
         }
+        else
+        {
+           // 打印失败码
+            NSLog(@"登陆失败码：%@\n登录失败信息：%@",[dict objectForKey:@"respCode"],[dict objectForKey:@"remark"]);
+        }
+    }
+    else
+    {
+       // 网络问题
     }
 }
 

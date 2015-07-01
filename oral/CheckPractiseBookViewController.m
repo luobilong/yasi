@@ -109,7 +109,7 @@
      */
     PracticeBookRecord *record = [_practiceArray objectAtIndex:indexPath.row];
     NSString *text = [_answerTextDict objectForKey:record.answerId];
-    CGRect rect = [NSString CalculateSizeOfString:text Width:kScreentWidth-80 Height:99999 FontSize:kFontSize1];
+    CGRect rect = [NSString CalculateSizeOfString:text Width:kScreentWidth-80 Height:99999 FontSize:kFontSize_14];
     if (rect.size.height>70)
     {
         return kCellHeight+rect.size.height-70;
@@ -154,10 +154,10 @@
     _currentPracticeRecord = [_practiceArray objectAtIndex:cell.cellIndex];
 
     // 参考答案音频路径
-    NSString *referPath = [NSString stringWithFormat:@"%@/Documents/%@/topicResource/temp/%@",NSHomeDirectory(),[OralDBFuncs getCurrentTopic],_currentPracticeRecord.referAudioName];
-   
+    NSString *referPath = [NSString stringWithFormat:@"%@/temp/%@",[self getPathWithTopic:[OralDBFuncs getCurrentTopic] IsPart:YES],_currentPracticeRecord.referAudioName];
+
     // 自己联系音频路径
-    NSString *answerPath = [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@/topicResource/%@",[OralDBFuncs getCurrentTopic],_currentPracticeRecord.lastAudioName];
+    NSString *answerPath = [NSString stringWithFormat:@"%@/%@",[self getPathWithTopic:[OralDBFuncs getCurrentTopic] IsPart:YES],_currentPracticeRecord.lastAudioName];
     NSLog(@"%@",answerPath);
     NSLog(@"%@",referPath);
     
@@ -325,7 +325,7 @@
     
     // 转移思必驰录音 清空原有的
     NSString *sbcPath = [NSString stringWithFormat:@"%@/Documents/record/%@.wav",NSHomeDirectory(),result.recordId];
-    NSString *sbcToPath =  [NSHomeDirectory() stringByAppendingFormat:@"/Documents/%@/topicResource/%@",[OralDBFuncs getCurrentTopic],_currentPracticeRecord.lastAudioName];
+    NSString *sbcToPath =  [NSString stringWithFormat:@"%@/%@",[self getPathWithTopic:[OralDBFuncs getCurrentTopic] IsPart:YES],_currentPracticeRecord.lastAudioName];
     NSData *fileData = [NSData dataWithContentsOfFile:sbcPath];
     BOOL saveSuc = [fileData writeToFile:sbcToPath atomically:YES];
     if (saveSuc)
